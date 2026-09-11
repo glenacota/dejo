@@ -84,6 +84,47 @@
         </div>
     </div>
 
+    <!-- CONJUGATION TABLE MODAL OVERLAY -->
+    <div id="tableModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+                <div>
+                    <h3 id="modalVerbTitle" class="text-2xl font-black text-white flex items-center gap-3">
+                        gehen <span id="modalVerbMeaning" class="text-sm font-normal text-slate-400 italic">to go</span>
+                    </h3>
+                </div>
+                <button id="closeModalBtn" class="text-slate-400 hover:text-white p-2 text-xl font-bold rounded-lg hover:bg-slate-800 transition-colors">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Modal Content Table -->
+            <div class="p-6 overflow-y-auto">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800 text-xs font-bold uppercase tracking-wider text-purple-400">
+                                <th class="py-3 px-3">Person</th>
+                                <th class="py-3 px-3">Präsens</th>
+                                <th class="py-3 px-3">Präteritum</th>
+                                <th class="py-3 px-3">Perfekt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="modalTableBody" class="divide-y divide-slate-800/60 font-mono">
+                            <!-- Rows populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3 border-t border-slate-800 bg-slate-950/50 text-right text-xs text-slate-500">
+                Press <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded border border-slate-700 font-sans">Esc</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded border border-slate-700 font-sans">Tab</kbd> to close
+            </div>
+        </div>
+    </div>
+
     <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-30">
         <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
@@ -254,6 +295,10 @@
             <div class="max-w-xl mx-auto flex gap-3">
                 <button id="checkVerbBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-purple-600/30 transition-all active:scale-[0.99] text-base">
                     Check Conjugations
+                </button>
+                <button id="toggleTableBtn" class="bg-purple-950/60 hover:bg-purple-900/80 text-purple-300 font-semibold py-3.5 px-4 rounded-xl border border-purple-800/60 transition-all flex items-center space-x-2 text-sm" title="Hotkey: Tab">
+                    <span>📚 Learn</span>
+                    <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] bg-purple-900/80 text-purple-200 rounded border border-purple-700/60 font-mono">Tab</kbd>
                 </button>
                 <button id="skipVerbBtn" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-800 transition-all">
                     Skip
@@ -446,6 +491,7 @@
             currentNoun: null,
             currentVerb: null,
             activeTab: 'nouns',
+            isModalOpen: false,
             // Spaced History Buffer (Previous 30 iterations tracking)
             nounHistory: [],
             verbHistory: []
@@ -476,6 +522,7 @@
             verbMeaning: document.getElementById('verbMeaning'),
             checkVerbBtn: document.getElementById('checkVerbBtn'),
             skipVerbBtn: document.getElementById('skipVerbBtn'),
+            toggleTableBtn: document.getElementById('toggleTableBtn'),
             verbFeedback: document.getElementById('verbFeedback'),
             tenseBtns: document.querySelectorAll('.tense-btn'),
             conjInputs: {
@@ -486,12 +533,27 @@
                 ihr: document.getElementById('conj_ihr'),
                 sie: document.getElementById('conj_sie')
             },
+            // Modal
+            tableModal: document.getElementById('tableModal'),
+            closeModalBtn: document.getElementById('closeModalBtn'),
+            modalVerbTitle: document.getElementById('modalVerbTitle'),
+            modalVerbMeaning: document.getElementById('modalVerbMeaning'),
+            modalTableBody: document.getElementById('modalTableBody'),
             // Toast
             milestoneToast: document.getElementById('milestoneToast'),
             milestoneToastText: document.getElementById('milestoneToastText')
         };
 
-        // Person-to-index mapping for verb conjugation arrays
+        // Person labels and index mapping
+        const persons = [
+            { label: 'ich', idx: 0 },
+            { label: 'du', idx: 1 },
+            { label: 'er/sie/es', idx: 2 },
+            { label: 'wir', idx: 3 },
+            { label: 'ihr', idx: 4 },
+            { label: 'sie/Sie', idx: 5 }
+        ];
+
         const personIndices = {
             ich: 0,
             du: 1,
@@ -680,6 +742,23 @@
             elements.verbInfinitive.textContent = state.currentVerb.w;
             elements.verbMeaning.textContent = "🇬🇧 " + state.currentVerb.m;
             elements.verbFeedback.classList.add('hidden');
+
+            // Dynamically update placeholder hints based on selected tense
+            const tenseArray = state.currentVerb[state.selectedTense] || [];
+            Object.keys(elements.conjInputs).forEach(person => {
+                const input = elements.conjInputs[person];
+                input.value = '';
+                input.classList.remove('border-rose-500', 'border-emerald-500');
+                const idx = personIndices[person];
+                if (tenseArray[idx]) {
+                    input.placeholder = `e.g. ${tenseArray[idx]}`;
+                }
+            });
+
+            // Update modal data if open
+            if (state.isModalOpen) {
+                renderConjugationModal();
+            }
         }
 
         function checkVerbAnswer() {
@@ -719,6 +798,48 @@
             }
         }
 
+        // Render Conjugation Modal Content
+        function renderConjugationModal() {
+            if (!state.currentVerb) return;
+
+            const verb = state.currentVerb;
+            elements.modalVerbTitle.childNodes[0].textContent = verb.w + " ";
+            elements.modalVerbMeaning.textContent = "🇬🇧 " + verb.m;
+
+            const pres = verb.pres || [];
+            const praet = verb.praet || [];
+            const perf = verb.perf || [];
+
+            elements.modalTableBody.innerHTML = persons.map(p => `
+                <tr class="hover:bg-slate-800/40 transition-colors">
+                    <td class="py-2.5 px-3 font-sans font-bold text-slate-400 text-xs">${p.label}</td>
+                    <td class="py-2.5 px-3 text-emerald-300 font-medium">${pres[p.idx] || '-'}</td>
+                    <td class="py-2.5 px-3 text-cyan-300 font-medium">${praet[p.idx] || '-'}</td>
+                    <td class="py-2.5 px-3 text-purple-300 font-medium">${perf[p.idx] || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function openModal() {
+            if (state.activeTab !== 'verbs') return;
+            renderConjugationModal();
+            elements.tableModal.classList.remove('hidden');
+            state.isModalOpen = true;
+        }
+
+        function closeModal() {
+            elements.tableModal.classList.add('hidden');
+            state.isModalOpen = false;
+        }
+
+        function toggleModal() {
+            if (state.isModalOpen) {
+                closeModal();
+            } else {
+                openModal();
+            }
+        }
+
         function showFeedback(element, htmlContent, className) {
             element.innerHTML = htmlContent;
             element.className = `max-w-xl mx-auto mt-4 p-4 rounded-xl text-center font-semibold text-sm transition-all ${className}`;
@@ -729,6 +850,26 @@
             // Tab switching
             elements.tabNouns.addEventListener('click', () => switchTab('nouns'));
             elements.tabVerbs.addEventListener('click', () => switchTab('verbs'));
+
+            // Modal Toggles
+            elements.toggleTableBtn.addEventListener('click', toggleModal);
+            elements.closeModalBtn.addEventListener('click', closeModal);
+            elements.tableModal.addEventListener('click', (e) => {
+                if (e.target === elements.tableModal) closeModal();
+            });
+
+            // Global Keydown Handler for Hotkeys
+            window.addEventListener('keydown', (e) => {
+                // Tab key opens/closes conjugation modal when in Verb tab
+                if (e.key === 'Tab' && state.activeTab === 'verbs') {
+                    e.preventDefault();
+                    toggleModal();
+                }
+                // Escape key closes modal
+                if (e.key === 'Escape' && state.isModalOpen) {
+                    closeModal();
+                }
+            });
 
             // Tense selection buttons
             elements.tenseBtns.forEach(btn => {
@@ -786,7 +927,6 @@
             elements.skipVerbBtn.addEventListener('click', nextVerb);
             Object.values(elements.conjInputs).forEach(input => {
                 input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') checkVerbAnswer();
                 });
             });
         }
@@ -798,6 +938,7 @@
                 elements.tabVerbs.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200";
                 elements.nounSection.classList.remove('hidden');
                 elements.verbSection.classList.add('hidden');
+                closeModal();
             } else {
                 elements.tabVerbs.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-purple-600 text-white shadow-md";
                 elements.tabNouns.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200";

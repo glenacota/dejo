@@ -34,13 +34,13 @@ const MAX_TIER_INDEX = 6;         // caps visual tier styling at belt index 6 (B
 const MILESTONE_TOAST_DURATION_MS = 3500;
 
 const BELT_NAMES = [
-    'White Belt (Weißgurt)', 
-    'Yellow Belt (Gelbgurt)', 
-    'Orange Belt (Orangengurt)', 
-    'Green Belt (Grüngurt)', 
-    'Blue Belt (Blaugurt)', 
-    'Brown Belt (Braungurt)', 
-    'Black Belt (Schwarzgurt)'
+    'White (Weiß)', 
+    'Yellow (Gelb)', 
+    'Orange (Orangen)', 
+    'Green (Grün)', 
+    'Blue (Blau)', 
+    'Brown (Braun)', 
+    'Black (Schwarz)'
 ];
 
 // Canonical person order shared by conjugation data, table rows and inputs.

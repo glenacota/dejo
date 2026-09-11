@@ -105,7 +105,7 @@
                 <h3 id="modalVerbTitle" class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
                     gehen <span id="modalVerbMeaning" class="text-sm font-normal text-slate-500 dark:text-slate-400 italic">to go</span>
                 </h3>
-                <button id="closeVerbModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 text-xl font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                <button id="closeVerbModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-3 text-xl font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                     ✕
                 </button>
             </div>
@@ -145,7 +145,7 @@
                 <h3 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
                     📚 German Noun & Plural Rules
                 </h3>
-                <button id="closeNounModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 text-xl font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                <button id="closeNounModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-3 text-xl font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                     ✕
                 </button>
             </div>
@@ -193,7 +193,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl leading-none text-slate-900 dark:text-slate-100"><span class="font-extrabold">DE</span>jo</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1"><span class="font-extrabold">De</span>utsch-Do<span class="font-extrabold">jo</span></p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 hidden sm:block"><span class="font-extrabold">De</span>utsch-Do<span class="font-extrabold">jo</span></p>
                 </div>
             </div>
 
@@ -224,10 +224,10 @@
                     <span id="tierLabel" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider">White Belt</span>
                     
                     <!-- Tooltip Trigger / Info Icon -->
-                    <div class="group relative cursor-pointer inline-flex items-center ml-1">
+                    <div class="group relative cursor-pointer inline-flex items-center ml-1 outline-none" tabindex="0">
                         <span class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold flex items-center justify-center transition-colors hover:bg-indigo-500 hover:text-white">?</span>
                         <!-- Tooltip Content -->
-                        <div class="absolute left-6 top-0 mb-2 hidden group-hover:block w-60 p-3 bg-slate-900 text-slate-100 text-[11px] rounded-xl shadow-2xl border border-slate-700 z-50 pointer-events-none">
+                        <div class="absolute left-6 top-0 mb-2 hidden group-hover:block group-focus:block group-focus-within:block w-60 p-3 bg-slate-900 text-slate-100 text-[11px] rounded-xl shadow-2xl border border-slate-700 z-50 pointer-events-none">
                             <p class="font-bold text-amber-400 mb-1">Karate Belt Progression:</p>
                             <p class="text-slate-300 mb-2">Advance every 5 consecutive correct answers (streak):</p>
                             <ul class="space-y-1 text-slate-300 font-mono">
@@ -254,10 +254,10 @@
         <!-- Navigation Tabs -->
         <div class="flex justify-center mb-6">
             <div class="bg-slate-200 dark:bg-slate-950/80 p-1 rounded-xl border border-slate-300 dark:border-slate-800 flex space-x-1">
-                <button id="tabNouns" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md">
+                <button id="tabNouns" class="px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md">
                     <span>📚 Nouns & Plurals</span>
                 </button>
-                <button id="tabVerbs" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
+                <button id="tabVerbs" class="px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
                     <span>🏃 Verb Conjugation</span>
                 </button>
             </div>
@@ -327,9 +327,9 @@
             <!-- Tense Selection Selector -->
             <div class="flex justify-center mb-6">
                 <div class="bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 p-1 rounded-xl flex space-x-1 max-w-xs w-full">
-                    <button id="tensePres" data-tense="pres" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-purple-600 text-white">Präsens</button>
-                    <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Präteritum</button>
-                    <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Perfekt</button>
+                    <button id="tensePres" data-tense="pres" class="tense-btn flex-1 py-3 rounded-lg text-xs font-bold transition-all bg-purple-600 text-white">Präsens</button>
+                    <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-3 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Präteritum</button>
+                    <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-3 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Perfekt</button>
                 </div>
             </div>
 
@@ -343,27 +343,27 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto my-6">
                 <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
                     <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">ich</span>
-                    <input type="text" id="conj_ich" placeholder="e.g. gehe" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                    <input type="text" id="conj_ich" placeholder="e.g. gehe" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
                     <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">du</span>
-                    <input type="text" id="conj_du" placeholder="e.g. gehst" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                    <input type="text" id="conj_du" placeholder="e.g. gehst" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
                     <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">er/sie/es</span>
-                    <input type="text" id="conj_er" placeholder="e.g. geht" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                    <input type="text" id="conj_er" placeholder="e.g. geht" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
                     <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">wir</span>
-                    <input type="text" id="conj_wir" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                    <input type="text" id="conj_wir" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
                     <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">ihr</span>
-                    <input type="text" id="conj_ihr" placeholder="e.g. geht" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                    <input type="text" id="conj_ihr" placeholder="e.g. geht" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
                     <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">sie/Sie</span>
-                    <input type="text" id="conj_sie" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                    <input type="text" id="conj_sie" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
             </div>
 

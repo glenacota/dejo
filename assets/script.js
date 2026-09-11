@@ -667,7 +667,7 @@ function bindEvents() {
     });
 
     window.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab' && state.activeTab === 'verbs') {
+        if (e.key === '?' && state.activeTab === 'verbs') {
             e.preventDefault();
             toggleModal();
         }

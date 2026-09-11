@@ -272,7 +272,8 @@ const state = {
     currentVerb: null,
 
     activeTab: 'nouns', // 'nouns' | 'verbs'
-    isModalOpen: false,
+    isVerbModalOpen: false,
+    isNounModalOpen: false,
 
     nounHistory: [],
     verbHistory: [],
@@ -303,15 +304,20 @@ const dom = {
     pluralInput: document.getElementById('pluralInput'),
     checkNounBtn: document.getElementById('checkNounBtn'),
     skipNounBtn: document.getElementById('skipNounBtn'),
+    toggleNounTableBtn: document.getElementById('toggleNounTableBtn'),
     nounFeedback: document.getElementById('nounFeedback'),
     genderBtns: document.querySelectorAll('.gender-btn'),
+
+    // Noun modal
+    nounModal: document.getElementById('nounModal'),
+    closeNounModalBtn: document.getElementById('closeNounModalBtn'),
 
     // Verb practice
     verbInfinitive: document.getElementById('verbInfinitive'),
     verbMeaning: document.getElementById('verbMeaning'),
     checkVerbBtn: document.getElementById('checkVerbBtn'),
     skipVerbBtn: document.getElementById('skipVerbBtn'),
-    toggleTableBtn: document.getElementById('toggleTableBtn'),
+    toggleVerbTableBtn: document.getElementById('toggleTableBtn'),
     verbFeedback: document.getElementById('verbFeedback'),
     tenseBtns: document.querySelectorAll('.tense-btn'),
     conjInputs: {
@@ -324,8 +330,8 @@ const dom = {
     },
 
     // Conjugation modal
-    tableModal: document.getElementById('tableModal'),
-    closeModalBtn: document.getElementById('closeModalBtn'),
+    verbModal: document.getElementById('verbModal'),
+    closeVerbModalBtn: document.getElementById('closeVerbModalBtn'),
     modalVerbTitle: document.getElementById('modalVerbTitle'),
     modalVerbMeaning: document.getElementById('modalVerbMeaning'),
     modalTableBody: document.getElementById('modalTableBody'),
@@ -552,7 +558,7 @@ function nextVerb() {
         input.classList.remove('border-rose-500', 'border-emerald-500');
     });
 
-    if (state.isModalOpen) {
+    if (state.isVerbModalOpen) {
         renderConjugationModal();
     }
 }
@@ -591,7 +597,7 @@ function checkVerbAnswer() {
 }
 
 /* ==================================================================
- * 14. CONJUGATION TABLE MODAL ("Teach Me!")
+ * 14. CONJUGATION & NOUN TABLE MODALS ("Teach Me!")
  * ================================================================== */
 
 function renderConjugationModal() {
@@ -618,17 +624,32 @@ function renderConjugationModal() {
 function openModal() {
     if (state.activeTab !== 'verbs') return;
     renderConjugationModal();
-    dom.tableModal.classList.remove('hidden');
-    state.isModalOpen = true;
+    dom.verbModal.classList.remove('hidden');
+    state.isVerbModalOpen = true;
 }
 
 function closeModal() {
-    dom.tableModal.classList.add('hidden');
-    state.isModalOpen = false;
+    dom.verbModal.classList.add('hidden');
+    state.isVerbModalOpen = false;
 }
 
 function toggleModal() {
-    state.isModalOpen ? closeModal() : openModal();
+    state.isVerbModalOpen ? closeModal() : openModal();
+}
+
+function openNounModal() {
+    if (state.activeTab !== 'nouns') return;
+    dom.nounModal.classList.remove('hidden');
+    state.isNounModalOpen = true;
+}
+
+function closeNounModal() {
+    dom.nounModal.classList.add('hidden');
+    state.isNounModalOpen = false;
+}
+
+function toggleNounModal() {
+    state.isNounModalOpen ? closeNounModal() : openNounModal();
 }
 
 /* ==================================================================
@@ -650,7 +671,8 @@ function switchTab(tab) {
     dom.nounSection.classList.toggle('hidden', !isNouns);
     dom.verbSection.classList.toggle('hidden', isNouns);
 
-    if (isNouns) closeModal();
+    if (isNouns) closeNounModal();
+    if (!isNouns) closeModal();
 }
 
 /* ==================================================================
@@ -663,19 +685,27 @@ function bindEvents() {
     dom.tabNouns.addEventListener('click', () => switchTab('nouns'));
     dom.tabVerbs.addEventListener('click', () => switchTab('verbs'));
 
-    dom.toggleTableBtn.addEventListener('click', toggleModal);
-    dom.closeModalBtn.addEventListener('click', closeModal);
-    dom.tableModal.addEventListener('click', (e) => {
-        if (e.target === dom.tableModal) closeModal();
+    dom.toggleVerbTableBtn.addEventListener('click', toggleModal);
+    dom.closeVerbModalBtn.addEventListener('click', closeModal);
+    dom.verbModal.addEventListener('click', (e) => {
+        if (e.target === dom.verbModal) closeModal();
+    });
+
+    dom.toggleNounTableBtn.addEventListener('click', toggleNounModal);
+    dom.closeNounModalBtn.addEventListener('click', closeNounModal);
+    dom.nounModal.addEventListener('click', (e) => {
+        if (e.target === dom.nounModal) closeNounModal();
     });
 
     window.addEventListener('keydown', (e) => {
-        if (e.key === '?' && state.activeTab === 'verbs') {
+        if (e.key === '?') {
             e.preventDefault();
-            toggleModal();
+            if (state.activeTab === 'verbs') toggleModal();
+            if (state.activeTab === 'nouns') toggleNounModal();
         }
-        if (e.key === 'Escape' && state.isModalOpen) {
-            closeModal();
+        if (e.key === 'Escape') {
+            if (state.isVerbModalOpen) closeModal();
+            if (state.isNounModalOpen) closeNounModal();
         }
     });
 

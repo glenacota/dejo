@@ -98,14 +98,14 @@
     </div>
 
     <!-- Conjugation Table Modal -->
-    <div id="tableModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+    <div id="verbModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
                 <h3 id="modalVerbTitle" class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
                     gehen <span id="modalVerbMeaning" class="text-sm font-normal text-slate-500 dark:text-slate-400 italic">to go</span>
                 </h3>
-                <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 text-xl font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                <button id="closeVerbModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 text-xl font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                     ✕
                 </button>
             </div>
@@ -133,6 +133,54 @@
             <div class="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 text-right text-xs text-slate-500">
                 Press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700 font-sans">Esc</kbd>
                 or <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700 font-sans">Tab</kbd> to close
+            </div>
+        </div>
+    </div>
+
+    <!-- Noun Teach Me Modal -->
+    <div id="nounModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                    📚 German Noun & Plural Rules
+                </h3>
+                <button id="closeNounModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 text-xl font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-6 overflow-y-auto space-y-4 text-sm text-slate-700 dark:text-slate-300">
+                <div class="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/60 font-medium text-indigo-900 dark:text-indigo-200">
+                    ☠️ <strong class="text-indigo-600 dark:text-indigo-400">No single rule applies to all nouns</strong>. Every German noun has a specific plural form that must be learned along with its gender and singular form.
+                </div>
+                
+                <ul class="space-y-3 font-sans">
+                    <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                        Most feminine nouns take <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-en</code> (or <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-n</code> if ending in <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-e</code>, <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-el</code>, <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-er</code>). Almost none take an umlaut. <span class="italic text-slate-500">(e.g., die Frau → die Frauen)</span>.
+                    </li>
+                    <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                        Many masculine and neuter nouns take <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-e</code>, frequently adding an umlaut to root vowels <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">a, o, u</code> <span class="italic text-slate-500">(e.g., der Baum → die Bäume)</span>.
+                    </li>
+                    <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                        >Nouns ending in -er, -el, -en usually take no extra ending, though masculine/neuter variants often add an umlaut <span class="italic text-slate-500">(e.g., der Apfel → die Äpfel; das Zimmer → die Zimmer)</span>.
+                    </li>
+                    <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                        Words ending in vowels (<code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">a, o, u, i, y</code>) and many foreign words take an <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-s</code> with no umlaut <span class="italic text-slate-500">(e.g., das Auto → die Autos)</span>.
+                    </li>
+                    <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                        A large group of short neuter nouns take <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-er</code> and add an umlaut <span class="italic text-slate-500">(e.g., das Kind → die Kinder; das Buch → die Bücher)</span>.
+                    </li>
+                    <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
+                        Nouns ending in <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-e</code>, <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-ant</code>, <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-ent</code>, <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-ist</code>, <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-or</code> for people/occupations almost always add <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-n</code> or <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-en</code> <span class="italic text-slate-500">(e.g., der Student → die Studenten)</span>.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 text-right text-xs text-slate-500">
+                Press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700 font-sans">Esc</kbd> to close
             </div>
         </div>
     </div>
@@ -250,12 +298,19 @@
             </div>
 
             <!-- Action Controls -->
-            <div class="max-w-md mx-auto flex gap-3">
-                <button id="checkNounBtn" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.99] text-base">
-                    Check Answer
-                </button>
-                <button id="skipNounBtn" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
-                    Skip
+            <div class="max-w-md mx-auto flex flex-col items-center gap-3">
+                <div class="flex w-full gap-3">
+                    <button id="checkNounBtn" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.99] text-base">
+                        Check Answer
+                    </button>
+                    <button id="skipNounBtn" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
+                        Skip
+                    </button>
+                </div>
+
+                <button id="toggleNounTableBtn" class="w-max text-indigo-700 dark:text-indigo-300 font-semibold py-2.5 px-5 flex items-center space-x-2 text-sm hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-xl" title="Hotkey: ?">
+                    <span>👨‍🏫 Teach me!</span>
+                    <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] bg-indigo-200 dark:bg-indigo-900/80 text-indigo-800 dark:text-indigo-200 rounded border border-indigo-300 dark:border-indigo-700/60 font-mono">?</kbd>
                 </button>
             </div>
 

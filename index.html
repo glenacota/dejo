@@ -71,7 +71,6 @@
         .belt-5 { background: linear-gradient(90deg, var(--belt-5-from), var(--belt-5-to)); }
         .belt-6 { background: linear-gradient(90deg, var(--belt-6-from), var(--belt-6-to)); }
 
-        /* Pixel Firework Toast Notice */
         .pixel-border {
             box-shadow:
                 -4px  0   0 0 #000,
@@ -85,7 +84,7 @@
 
     <canvas id="fireworksCanvas"></canvas>
 
-    <!-- Milestone Banner Toast (hidden by default) -->
+    <!-- Milestone Banner Toast -->
     <div id="milestoneToast" class="fixed top-8 left-1/2 -translate-x-1/2 z-50 hidden transition-all transform duration-300">
         <div class="bg-amber-400 text-slate-950 font-pixel text-xs sm:text-sm px-6 py-4 rounded-none border-4 border-slate-950 shadow-2xl flex items-center space-x-3 animate-bounce">
             <span class="text-xl">🥋</span>
@@ -100,7 +99,6 @@
     <!-- Conjugation Table Modal -->
     <div id="verbModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
                 <h3 id="modalVerbTitle" class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
                     gehen <span id="modalVerbMeaning" class="text-sm font-normal text-slate-500 dark:text-slate-400 italic">to go</span>
@@ -109,8 +107,6 @@
                     ✕
                 </button>
             </div>
-
-            <!-- Modal Content Table -->
             <div class="p-6 overflow-y-auto">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm border-collapse">
@@ -122,14 +118,10 @@
                                 <th class="py-3 px-3">Perfekt</th>
                             </tr>
                         </thead>
-                        <tbody id="modalTableBody" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-mono">
-                            <!-- Rows populated dynamically -->
-                        </tbody>
+                        <tbody id="modalTableBody" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-mono"></tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- Modal Footer -->
             <div class="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 text-right text-xs text-slate-500">
                 Press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700 font-sans">Esc</kbd>
                 or <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700 font-sans">Tab</kbd> to close
@@ -140,7 +132,6 @@
     <!-- Noun Teach Me Modal -->
     <div id="nounModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
                 <h3 class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
                     📚 German Noun & Plural Rules
@@ -149,13 +140,10 @@
                     ✕
                 </button>
             </div>
-
-            <!-- Modal Content -->
             <div class="p-6 overflow-y-auto space-y-4 text-sm text-slate-700 dark:text-slate-300">
                 <div class="p-4 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-900/60 font-medium text-indigo-900 dark:text-indigo-200">
                     ☠️ <strong class="text-indigo-600 dark:text-indigo-400">No single rule applies to all nouns</strong>. Every German noun has a specific plural form that must be learned along with its gender and singular form.
                 </div>
-                
                 <ul class="space-y-3 font-sans">
                     <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
                         Most feminine nouns take <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-en</code> (or <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-n</code> if ending in <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-e</code>, <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-el</code>, <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-er</code>). Almost none take an umlaut. <span class="italic text-slate-500">(e.g., die Frau → die Frauen)</span>.
@@ -164,7 +152,7 @@
                         Many masculine and neuter nouns take <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-e</code>, frequently adding an umlaut to root vowels <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">a, o, u</code> <span class="italic text-slate-500">(e.g., der Baum → die Bäume)</span>.
                     </li>
                     <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
-                        >Nouns ending in -er, -el, -en usually take no extra ending, though masculine/neuter variants often add an umlaut <span class="italic text-slate-500">(e.g., der Apfel → die Äpfel; das Zimmer → die Zimmer)</span>.
+                        Nouns ending in -er, -el, -en usually take no extra ending, though masculine/neuter variants often add an umlaut <span class="italic text-slate-500">(e.g., der Apfel → die Äpfel; das Zimmer → die Zimmer)</span>.
                     </li>
                     <li class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60">
                         Words ending in vowels (<code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">a, o, u, i, y</code>) and many foreign words take an <code class="bg-slate-200 dark:bg-slate-900 px-1.5 py-0.5 rounded font-mono">-s</code> with no umlaut <span class="italic text-slate-500">(e.g., das Auto → die Autos)</span>.
@@ -177,8 +165,6 @@
                     </li>
                 </ul>
             </div>
-
-            <!-- Modal Footer -->
             <div class="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 text-right text-xs text-slate-500">
                 Press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700 font-sans">Esc</kbd> to close
             </div>
@@ -223,10 +209,8 @@
                     <span class="flex items-center gap-1">🥋 Dojo Rank</span>
                     <span id="tierLabel" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider">White Belt</span>
                     
-                    <!-- Tooltip Trigger / Info Icon -->
                     <div class="group relative cursor-pointer inline-flex items-center ml-1 outline-none" tabindex="0">
                         <span class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold flex items-center justify-center transition-colors hover:bg-indigo-500 hover:text-white">?</span>
-                        <!-- Tooltip Content -->
                         <div class="absolute left-6 top-0 mb-2 hidden group-hover:block group-focus:block group-focus-within:block w-60 p-3 bg-slate-900 text-slate-100 text-[11px] rounded-xl shadow-2xl border border-slate-700 z-50 pointer-events-none">
                             <p class="font-bold text-amber-400 mb-1">Karate Belt Progression:</p>
                             <p class="text-slate-300 mb-2">Advance every 5 consecutive correct answers (streak):</p>
@@ -250,9 +234,9 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 py-6 flex-grow w-full">
+    <main class="max-w-4xl mx-auto px-4 py-4 flex-grow w-full">
         <!-- Navigation Tabs -->
-        <div class="flex justify-center mb-6">
+        <div class="flex justify-center mb-4">
             <div class="bg-slate-200 dark:bg-slate-950/80 p-1 rounded-xl border border-slate-300 dark:border-slate-800 flex space-x-1">
                 <button id="tabNouns" class="px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md">
                     <span>📚 Nouns & Plurals</span>
@@ -265,19 +249,15 @@
 
         <!-- NOUN PRACTICE -->
         <section id="nounSection" class="bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden transition-colors duration-200">
-            <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-4">
-                <span class="uppercase tracking-wider font-semibold text-indigo-600 dark:text-indigo-400">Noun Practice</span>
-            </div>
-
             <!-- Target Word Display -->
-            <div class="text-center my-6">
+            <div class="text-center mt-2 mb-10">
                 <h2 id="nounWord" class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">Loading...</h2>
                 <p id="nounMeaning" class="text-slate-500 dark:text-slate-400 text-lg mt-2 font-medium italic">meaning</p>
             </div>
 
             <!-- Gender Selection Buttons -->
-            <div class="mb-6">
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-center mb-3">Select Grammatical Gender</label>
+            <div class="max-w-md mx-auto mb-6">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Select Noun Gender</label>
                 <div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
                     <button type="button" data-gender="der" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-blue-600 dark:text-blue-400 font-bold text-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" aria-pressed="false">
                         der
@@ -293,12 +273,12 @@
 
             <!-- Plural Form Input -->
             <div class="max-w-md mx-auto mb-6">
-                <label for="pluralInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Plural Form (die ...)</label>
+                <label for="pluralInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Type the Plural Form (<em>die ...</em>)</label>
                 <input type="text" id="pluralInput" placeholder="e.g. Kinder" autocomplete="off" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-center font-medium text-lg transition-all">
             </div>
 
             <!-- Action Controls -->
-            <div class="max-w-md mx-auto flex flex-col items-center gap-3">
+            <div class="max-w-md mx-auto flex flex-col items-center gap-3 mt-10">
                 <div class="flex w-full gap-3">
                     <button id="checkNounBtn" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.99] text-base">
                         Check Answer
@@ -320,27 +300,29 @@
 
         <!-- VERB PRACTICE -->
         <section id="verbSection" class="bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden hidden transition-colors duration-200">
-            <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-4">
-                <span class="uppercase tracking-wider font-semibold text-purple-600 dark:text-purple-400">Verb Conjugation Practice</span>
+            <!-- Target Verb Display -->
+            <div class="text-center mt-2 mb-10">
+                <h2 id="verbInfinitive" class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">gehen</h2>
+                <p id="verbMeaning" class="text-slate-500 dark:text-slate-400 text-lg mt-1 font-medium italic">to go</p>
             </div>
 
             <!-- Tense Selection Selector -->
+             <div class="max-w-md mx-auto mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Select the tense you want to practice with</span>
+            </div>
             <div class="flex justify-center mb-6">
-                <div class="bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 p-1 rounded-xl flex space-x-1 max-w-xs w-full">
+                <div class="bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 p-1 rounded-xl flex space-x-1 max-w-md w-full mx-auto">
                     <button id="tensePres" data-tense="pres" class="tense-btn flex-1 py-3 rounded-lg text-xs font-bold transition-all bg-purple-600 text-white">Präsens</button>
                     <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-3 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Präteritum</button>
                     <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-3 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Perfekt</button>
                 </div>
             </div>
 
-            <!-- Target Verb Display -->
-            <div class="text-center my-4">
-                <h2 id="verbInfinitive" class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">gehen</h2>
-                <p id="verbMeaning" class="text-slate-500 dark:text-slate-400 text-lg mt-1 font-medium italic">to go</p>
-            </div>
-
             <!-- Conjugation Grid Input -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto my-6">
+            <div class="max-w-md mx-auto mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Fill in the Pronoun Conjugations</span>
+            </div>
+            <div class="grid grid-cols-1 gap-3 max-w-md mx-auto mb-6">
                 <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
                     <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">ich</span>
                     <input type="text" id="conj_ich" placeholder="e.g. gehe" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-base text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
@@ -368,10 +350,10 @@
             </div>
 
             <!-- Action Controls -->
-            <div class="max-w-xl mx-auto flex flex-col items-center gap-3">
+            <div class="max-w-md mx-auto flex flex-col items-center gap-3 mt-10">
                 <div class="flex w-full gap-3">
                     <button id="checkVerbBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-purple-600/30 transition-all active:scale-[0.99] text-base">
-                        Check Conjugations
+                        Check Answer
                     </button>
                     <button id="skipVerbBtn" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
                         Skip
@@ -404,7 +386,7 @@
                 <svg class="w-3.5 h-3.5 fill-current inline" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
                 <b>glenacota/dejo</b>
             </a> 
-            &bull;</span> 2026
+            &bull; 2026
         </p>
     </footer>
 

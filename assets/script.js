@@ -29,11 +29,19 @@ const AUTO_ADVANCE_DELAY_MS = {
 const HISTORY_MAX_SIZE = 30;   // how many recently-seen words we avoid repeating
 const HISTORY_RECYCLE_SIZE = 5; // kept entries when the pool is exhausted and reset
 
-const MILESTONE_INTERVAL = 10;    // streak count that triggers a celebration
-const MAX_TIER_INDEX = 5;         // caps visual tier styling at tier-5 ("Rainbow God")
+const MILESTONE_INTERVAL = 5;     // streak count that triggers a belt promotion (reduced from 10 to 5)
+const MAX_TIER_INDEX = 6;         // caps visual tier styling at belt index 6 (Black Belt)
 const MILESTONE_TOAST_DURATION_MS = 3500;
 
-const TIER_NAMES = ['Bronze', 'Emerald', 'Cyan', 'Purple', 'Gold Master', 'Rainbow God'];
+const BELT_NAMES = [
+    'White Belt (Weißgurt)', 
+    'Yellow Belt (Gelbgurt)', 
+    'Orange Belt (Orangengurt)', 
+    'Green Belt (Grüngurt)', 
+    'Blue Belt (Blaugurt)', 
+    'Brown Belt (Braungurt)', 
+    'Black Belt (Schwarzgurt)'
+];
 
 // Canonical person order shared by conjugation data, table rows and inputs.
 const PERSONS = [
@@ -266,8 +274,6 @@ const state = {
     activeTab: 'nouns', // 'nouns' | 'verbs'
     isModalOpen: false,
 
-    // Spaced-repetition buffers: recently-seen words are avoided until
-    // the pool of "unseen" items runs out, then the oldest are recycled.
     nounHistory: [],
     verbHistory: [],
 };
@@ -401,8 +407,6 @@ function initApp() {
 
 /* ==================================================================
  * 9. SPACED-REPETITION SELECTION
- *    Shared helper: picks a random item not seen recently, recycling
- *    the history once every item in the pool has been used.
  * ================================================================== */
 
 function pickNextWithSpacedHistory(dataset, history) {
@@ -454,7 +458,8 @@ function triggerMilestoneReward() {
     fireworks.triggerShow();
 
     const currentTier = Math.floor(state.streak / MILESTONE_INTERVAL);
-    dom.milestoneToastText.textContent = `🔥 Magnificent ${state.streak} Streak! Tier ${currentTier + 1} Unlocked!`;
+    const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];
+    dom.milestoneToastText.textContent = `🔥 Streak ${state.streak}! Promoted to ${beltName}!`;
     dom.milestoneToast.classList.remove('hidden');
 
     setTimeout(() => {
@@ -478,10 +483,10 @@ function updateDashboardUI() {
     dom.progressText.textContent = `${streakInTier} / ${MILESTONE_INTERVAL} Streak`;
     dom.progressBar.style.width = `${progressPercent}%`;
 
-    const tierName = TIER_NAMES[Math.min(currentTier, TIER_NAMES.length - 1)];
-    dom.tierLabel.textContent = `Tier ${currentTier + 1}: ${tierName}`;
+    const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];
+    dom.tierLabel.textContent = beltName;
 
-    const tierClass = `tier-${Math.min(currentTier, MAX_TIER_INDEX)}`;
+    const tierClass = `belt-${Math.min(currentTier, MAX_TIER_INDEX)}`;
     dom.progressBar.className = `h-full rounded-full transition-all duration-500 ease-out ${tierClass}`;
 }
 
@@ -593,8 +598,6 @@ function renderConjugationModal() {
     if (!state.currentVerb) return;
 
     const verb = state.currentVerb;
-    // The title node is "<infinitive> <span>meaning</span>" — only the
-    // leading text node is replaced so the meaning span stays intact.
     dom.modalVerbTitle.childNodes[0].textContent = `${verb.w} `;
     dom.modalVerbMeaning.textContent = `🇬🇧 ${verb.m}`;
 

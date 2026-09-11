@@ -54,29 +54,22 @@
         }
 
         :root {
-            --tier-0-from: #f97316; --tier-0-to: #fbbf24; /* Bronze  */
-            --tier-1-from: #10b981; --tier-1-to: #34d399; /* Emerald */
-            --tier-2-from: #06b6d4; --tier-2-to: #38bdf8; /* Cyan    */
-            --tier-3-from: #8b5cf6; --tier-3-to: #c084fc; /* Purple  */
-            --tier-4-from: #eab308; --tier-4-to: #fef08a; /* Gold    */
+            --belt-0-from: #f1f5f9; --belt-0-to: #cbd5e1; /* White  */
+            --belt-1-from: #fef08a; --belt-1-to: #eab308; /* Yellow */
+            --belt-2-from: #fed7aa; --belt-2-to: #f97316; /* Orange */
+            --belt-3-from: #a7f3d0; --belt-3-to: #10b981; /* Green  */
+            --belt-4-from: #bae6fd; --belt-4-to: #0284c7; /* Blue   */
+            --belt-5-from: #d7b49e; --belt-5-to: #78350f; /* Brown  */
+            --belt-6-from: #334155; --belt-6-to: #0f172a; /* Black  */
         }
 
-        .tier-0 { background: linear-gradient(90deg, var(--tier-0-from), var(--tier-0-to)); }
-        .tier-1 { background: linear-gradient(90deg, var(--tier-1-from), var(--tier-1-to)); }
-        .tier-2 { background: linear-gradient(90deg, var(--tier-2-from), var(--tier-2-to)); }
-        .tier-3 { background: linear-gradient(90deg, var(--tier-3-from), var(--tier-3-to)); }
-        .tier-4 { background: linear-gradient(90deg, var(--tier-4-from), var(--tier-4-to)); }
-        .tier-5 {
-            background: linear-gradient(90deg, #ef4444, #f97316, #eab308, #10b981, #06b6d4, #8b5cf6);
-            background-size: 200% 200%;
-            animation: rainbowShift 3s ease infinite;
-        }
-
-        @keyframes rainbowShift {
-            0%   { background-position: 0% 50%; }
-            50%  { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        .belt-0 { background: linear-gradient(90deg, var(--belt-0-from), var(--belt-0-to)); }
+        .belt-1 { background: linear-gradient(90deg, var(--belt-1-from), var(--belt-1-to)); }
+        .belt-2 { background: linear-gradient(90deg, var(--belt-2-from), var(--belt-2-to)); }
+        .belt-3 { background: linear-gradient(90deg, var(--belt-3-from), var(--belt-3-to)); }
+        .belt-4 { background: linear-gradient(90deg, var(--belt-4-from), var(--belt-4-to)); }
+        .belt-5 { background: linear-gradient(90deg, var(--belt-5-from), var(--belt-5-to)); }
+        .belt-6 { background: linear-gradient(90deg, var(--belt-6-from), var(--belt-6-to)); }
 
         /* Pixel Firework Toast Notice */
         .pixel-border {
@@ -95,12 +88,12 @@
     <!-- Milestone Banner Toast (hidden by default) -->
     <div id="milestoneToast" class="fixed top-8 left-1/2 -translate-x-1/2 z-50 hidden transition-all transform duration-300">
         <div class="bg-amber-400 text-slate-950 font-pixel text-xs sm:text-sm px-6 py-4 rounded-none border-4 border-slate-950 shadow-2xl flex items-center space-x-3 animate-bounce">
-            <span class="text-xl">🎆</span>
+            <span class="text-xl">🥋</span>
             <div>
-                <div class="font-bold uppercase tracking-wider">Milestone Reached!</div>
-                <div id="milestoneToastText" class="text-[10px] opacity-90">10 Streak Bonus Unlocked!</div>
+                <div class="font-bold uppercase tracking-wider">Belt Promoted!</div>
+                <div id="milestoneToastText" class="text-[10px] opacity-90">New Karate Belt Unlocked!</div>
             </div>
-            <span class="text-xl">🚀</span>
+            <span class="text-xl">🎆</span>
         </div>
     </div>
 
@@ -175,17 +168,36 @@
             </div>
         </div>
 
-        <!-- 10-Streak Progress Bar -->
+        <!-- Karate Belt Progress Bar & Tooltip -->
         <div class="max-w-4xl mx-auto px-4 pb-3 py-4">
-            <div class="flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
-                <span class="flex items-center space-x-1">
-                    <span>Milestone Progress</span>
-                    <span id="tierLabel" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider">Tier 1</span>
+            <div class="flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5 relative">
+                <span class="flex items-center space-x-1.5">
+                    <span class="flex items-center gap-1">🥋 Dojo Rank</span>
+                    <span id="tierLabel" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider">White Belt</span>
+                    
+                    <!-- Tooltip Trigger / Info Icon -->
+                    <div class="group relative cursor-pointer inline-flex items-center ml-1">
+                        <span class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold flex items-center justify-center transition-colors hover:bg-indigo-500 hover:text-white">?</span>
+                        <!-- Tooltip Content -->
+                        <div class="absolute left-0 bottom-6 mb-2 hidden group-hover:block w-60 p-3 bg-slate-900 text-slate-100 text-[11px] rounded-xl shadow-2xl border border-slate-700 z-50 pointer-events-none">
+                            <p class="font-bold text-amber-400 mb-1">Karate Belt Progression:</p>
+                            <p class="text-slate-300 mb-2">Advance every 5 consecutive correct answers (streak):</p>
+                            <ul class="space-y-1 text-slate-300 font-mono">
+                                <li>⚪ White (0-4)</li>
+                                <li>🟡 Yellow (5-9)</li>
+                                <li>🟠 Orange (10-14)</li>
+                                <li>🟢 Green (15-19)</li>
+                                <li>🔵 Blue (20-24)</li>
+                                <li>🟤 Brown (25-29)</li>
+                                <li>⚫ Black (30+)</li>
+                            </ul>
+                        </div>
+                    </div>
                 </span>
-                <span id="progressText" class="font-mono text-slate-700 dark:text-slate-300">0 / 10 Streak</span>
+                <span id="progressText" class="font-mono text-slate-700 dark:text-slate-300">0 / 5 Streak</span>
             </div>
             <div class="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-300 dark:border-slate-700/50 shadow-inner">
-                <div id="progressBar" class="h-full rounded-full transition-all duration-500 ease-out tier-0 w-0"></div>
+                <div id="progressBar" class="h-full rounded-full transition-all duration-500 ease-out belt-0 w-0"></div>
             </div>
         </div>
     </header>

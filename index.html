@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deutsch Dojo - Interactive German Trainer</title>
+    <title>Dejo - Deutsch Dojo</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <script>
@@ -30,6 +30,17 @@
         }
     </script>
     <style>
+        .german-flag-text {
+            background: linear-gradient(
+                to bottom,
+                #000000 0%, #000000 33.33%,
+                #DD0000 33.33%, #DD0000 66.66%,
+                #FFCC00 66.66%, #FFCC00 100%
+            );
+            
+            display: inline-block;
+        }
+
         canvas#fireworksCanvas {
             position: fixed;
             top: 0;
@@ -126,14 +137,14 @@
     </div>
 
     <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 transition-colors duration-200">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/30">
-                    🥋
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/30 german-flag-text">
+                    <img src="./assets/logo.png" alt="DEjo - Deutsch Dojo" />
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg leading-none text-slate-900 dark:text-slate-100">Deutsch Dojo</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Interactive German Trainer</p>
+                    <h1 class="font-bold text-lg leading-none text-slate-900 dark:text-slate-100"><span class="text-amber-600 dark:text-yellow-400">DE</span>jo</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1"><span class="text-amber-600 dark:text-yellow-400 font-bold">De</span>utsch <span class="text-amber-600 dark:text-yellow-400 font-bold">Do</span>jo</p>
                 </div>
             </div>
 
@@ -162,7 +173,7 @@
         </div>
 
         <!-- 10-Streak Progress Bar Section -->
-        <div class="max-w-4xl mx-auto px-4 pb-3">
+        <div class="max-w-4xl mx-auto px-4 pb-3 py-4">
             <div class="flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
                 <span class="flex items-center space-x-1">
                     <span>Milestone Progress</span>
@@ -321,7 +332,7 @@
     </div>
 
     <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-4 text-center text-xs text-slate-500 transition-colors duration-200">
-        <p>Deutsch Dojo &bull; <a href="https://www.glenacota.me/" class="text-amber-600 dark:text-yellow-400 underline">glenacota</a> &bull; 2026</p>
+        <p>DEjo &bull; <a href="https://www.glenacota.me/" class="text-amber-600 dark:text-yellow-400 underline">glenacota</a> &bull; 2026</p>
     </footer>
 
     <script>

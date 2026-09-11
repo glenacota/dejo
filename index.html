@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,7 +68,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen font-sans flex flex-col justify-between selection:bg-indigo-500 selection:text-white transition-colors duration-200">
 
     <canvas id="fireworksCanvas"></canvas>
 
@@ -86,15 +86,15 @@
 
     <!-- CONJUGATION TABLE MODAL OVERLAY -->
     <div id="tableModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
-        <div class="bg-slate-900 border border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
             <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
                 <div>
-                    <h3 id="modalVerbTitle" class="text-2xl font-black text-white flex items-center gap-3">
-                        gehen <span id="modalVerbMeaning" class="text-sm font-normal text-slate-400 italic">to go</span>
+                    <h3 id="modalVerbTitle" class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
+                        gehen <span id="modalVerbMeaning" class="text-sm font-normal text-slate-500 dark:text-slate-400 italic">to go</span>
                     </h3>
                 </div>
-                <button id="closeModalBtn" class="text-slate-400 hover:text-white p-2 text-xl font-bold rounded-lg hover:bg-slate-800 transition-colors">
+                <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 text-xl font-bold rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
                     ✕
                 </button>
             </div>
@@ -104,14 +104,14 @@
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm border-collapse">
                         <thead>
-                            <tr class="border-b border-slate-800 text-xs font-bold uppercase tracking-wider text-purple-400">
+                            <tr class="border-b border-slate-200 dark:border-slate-800 text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">
                                 <th class="py-3 px-3">Person</th>
                                 <th class="py-3 px-3">Präsens</th>
                                 <th class="py-3 px-3">Präteritum</th>
                                 <th class="py-3 px-3">Perfekt</th>
                             </tr>
                         </thead>
-                        <tbody id="modalTableBody" class="divide-y divide-slate-800/60 font-mono">
+                        <tbody id="modalTableBody" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-mono">
                             <!-- Rows populated dynamically -->
                         </tbody>
                     </table>
@@ -119,57 +119,59 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="px-6 py-3 border-t border-slate-800 bg-slate-950/50 text-right text-xs text-slate-500">
-                Press <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded border border-slate-700 font-sans">Esc</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded border border-slate-700 font-sans">Tab</kbd> to close
+            <div class="px-6 py-3 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 text-right text-xs text-slate-500">
+                Press <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700 font-sans">Esc</kbd> or <kbd class="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700 font-sans">Tab</kbd> to close
             </div>
         </div>
     </div>
 
-    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-30">
+    <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 transition-colors duration-200">
         <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/30">
                     🥋
                 </div>
                 <div>
-                    <h1 class="font-bold text-lg leading-none text-slate-100">Deutsch Dojo</h1>
-                    <p class="text-xs text-slate-400 mt-1">Interactive German Trainer</p>
+                    <h1 class="font-bold text-lg leading-none text-slate-900 dark:text-slate-100">Deutsch Dojo</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Interactive German Trainer</p>
                 </div>
             </div>
 
-            <!-- Gamification Dashboard -->
-            <div class="flex items-center space-x-4 bg-slate-900/90 border border-slate-800 px-4 py-2 rounded-xl">
-                <!-- XP -->
-                <div class="flex items-center space-x-1.5" title="Total Experience Points">
-                    <span class="text-amber-400 text-base">🥨</span>
-                    <span id="xpDisplay" class="font-bold text-slate-200 text-sm">0 XP</span>
-                </div>
-                <div class="h-4 w-px bg-slate-800"></div>
-                <!-- Current Streak -->
-                <div class="flex items-center space-x-1.5" title="Current Streak">
-                    <span class="text-orange-500 text-base">🔥</span>
-                    <span id="streakDisplay" class="font-bold text-slate-200 text-sm">0</span>
-                </div>
-                <div class="h-4 w-px bg-slate-800"></div>
-                <!-- Best Streak -->
-                <div class="flex items-center space-x-1.5" title="Personal Record Streak">
-                    <span class="text-yellow-400 text-base">🏆</span>
-                    <span id="maxStreakDisplay" class="font-bold text-slate-200 text-sm">0</span>
+            <div class="flex items-center space-x-3">
+                <!-- Gamification Dashboard -->
+                <div class="flex items-center space-x-4 bg-slate-100 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 px-4 py-2 rounded-xl">
+                    <!-- XP -->
+                    <div class="flex items-center space-x-1.5" title="Total Experience Points">
+                        <span class="text-amber-500 dark:text-amber-400 text-base">🥨</span>
+                        <span id="xpDisplay" class="font-bold text-slate-800 dark:text-slate-200 text-sm">0 XP</span>
+                    </div>
+                    <div class="h-4 w-px bg-slate-300 dark:bg-slate-800"></div>
+                    <!-- Current Streak -->
+                    <div class="flex items-center space-x-1.5" title="Current Streak">
+                        <span class="text-orange-500 text-base">🔥</span>
+                        <span id="streakDisplay" class="font-bold text-slate-800 dark:text-slate-200 text-sm">0</span>
+                    </div>
+                    <div class="h-4 w-px bg-slate-300 dark:bg-slate-800"></div>
+                    <!-- Best Streak -->
+                    <div class="flex items-center space-x-1.5" title="Personal Record Streak">
+                        <span class="text-yellow-500 dark:text-yellow-400 text-base">🏆</span>
+                        <span id="maxStreakDisplay" class="font-bold text-slate-800 dark:text-slate-200 text-sm">0</span>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- 10-Streak Progress Bar Section -->
         <div class="max-w-4xl mx-auto px-4 pb-3">
-            <div class="flex items-center justify-between text-xs font-medium text-slate-400 mb-1.5">
+            <div class="flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5">
                 <span class="flex items-center space-x-1">
                     <span>Milestone Progress</span>
-                    <span id="tierLabel" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-indigo-400 font-semibold uppercase tracking-wider">Tier 1</span>
+                    <span id="tierLabel" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider">Tier 1</span>
                 </span>
-                <span id="progressText" class="font-mono text-slate-300">0 / 10 Streak</span>
+                <span id="progressText" class="font-mono text-slate-700 dark:text-slate-300">0 / 10 Streak</span>
             </div>
             <!-- Dynamic Progress Track -->
-            <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700/50 shadow-inner">
+            <div class="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-300 dark:border-slate-700/50 shadow-inner">
                 <div id="progressBar" class="h-full rounded-full transition-all duration-500 ease-out tier-0 w-0"></div>
             </div>
         </div>
@@ -178,39 +180,39 @@
     <main class="max-w-4xl mx-auto px-4 py-6 flex-grow w-full">
         <!-- Navigation Tabs -->
         <div class="flex justify-center mb-6">
-            <div class="bg-slate-950/80 p-1 rounded-xl border border-slate-800 flex space-x-1">
+            <div class="bg-slate-200 dark:bg-slate-950/80 p-1 rounded-xl border border-slate-300 dark:border-slate-800 flex space-x-1">
                 <button id="tabNouns" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md">
                     <span>🏷️ Nouns & Plurals</span>
                 </button>
-                <button id="tabVerbs" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200">
+                <button id="tabVerbs" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
                     <span>⚡ Verb Conjugation</span>
                 </button>
             </div>
         </div>
 
         <!-- NOUN PRACTICE CARD -->
-        <section id="nounSection" class="bg-slate-950/60 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden">
-            <div class="flex items-center justify-between text-xs text-slate-400 mb-4">
-                <span class="uppercase tracking-wider font-semibold text-indigo-400">Noun Practice</span>
+        <section id="nounSection" class="bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden transition-colors duration-200">
+            <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-4">
+                <span class="uppercase tracking-wider font-semibold text-indigo-600 dark:text-indigo-400">Noun Practice</span>
             </div>
 
             <!-- Target Word Display -->
             <div class="text-center my-6">
-                <h2 id="nounWord" class="text-4xl sm:text-5xl font-black text-white tracking-tight">Loading...</h2>
-                <p id="nounMeaning" class="text-slate-400 text-lg mt-2 font-medium italic">meaning</p>
+                <h2 id="nounWord" class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">Loading...</h2>
+                <p id="nounMeaning" class="text-slate-500 dark:text-slate-400 text-lg mt-2 font-medium italic">meaning</p>
             </div>
 
             <!-- Gender Selection Buttons -->
             <div class="mb-6">
-                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 text-center mb-3">Select Grammatical Gender</label>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-center mb-3">Select Grammatical Gender</label>
                 <div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
-                    <button type="button" data-gender="der" class="gender-btn py-3 rounded-xl border border-slate-700 bg-slate-900 text-blue-400 font-bold text-lg hover:border-blue-500 hover:bg-blue-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" aria-pressed="false">
+                    <button type="button" data-gender="der" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-blue-600 dark:text-blue-400 font-bold text-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" aria-pressed="false">
                         der
                     </button>
-                    <button type="button" data-gender="die" class="gender-btn py-3 rounded-xl border border-slate-700 bg-slate-900 text-rose-400 font-bold text-lg hover:border-rose-500 hover:bg-rose-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-rose-500" aria-pressed="false">
+                    <button type="button" data-gender="die" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-rose-600 dark:text-rose-400 font-bold text-lg hover:border-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-rose-500" aria-pressed="false">
                         die
                     </button>
-                    <button type="button" data-gender="das" class="gender-btn py-3 rounded-xl border border-slate-700 bg-slate-900 text-amber-400 font-bold text-lg hover:border-amber-500 hover:bg-amber-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500" aria-pressed="false">
+                    <button type="button" data-gender="das" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-amber-600 dark:text-amber-400 font-bold text-lg hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500" aria-pressed="false">
                         das
                     </button>
                 </div>
@@ -218,8 +220,8 @@
 
             <!-- Plural Form Input -->
             <div class="max-w-md mx-auto mb-6">
-                <label for="pluralInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Plural Form (die ...)</label>
-                <input type="text" id="pluralInput" placeholder="e.g. Kinder" autocomplete="off" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-center font-medium text-lg">
+                <label for="pluralInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Plural Form (die ...)</label>
+                <input type="text" id="pluralInput" placeholder="e.g. Kinder" autocomplete="off" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-center font-medium text-lg">
             </div>
 
             <!-- Action Controls -->
@@ -227,7 +229,7 @@
                 <button id="checkNounBtn" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.99] text-base">
                     Check Answer
                 </button>
-                <button id="skipNounBtn" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-800 transition-all">
+                <button id="skipNounBtn" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
                     Skip
                 </button>
             </div>
@@ -237,57 +239,57 @@
         </section>
 
         <!-- VERB PRACTICE CARD (Hidden initially) -->
-        <section id="verbSection" class="bg-slate-950/60 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden hidden">
-            <div class="flex items-center justify-between text-xs text-slate-400 mb-4">
-                <span class="uppercase tracking-wider font-semibold text-purple-400">Verb Conjugation Practice</span>
+        <section id="verbSection" class="bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden hidden transition-colors duration-200">
+            <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-4">
+                <span class="uppercase tracking-wider font-semibold text-purple-600 dark:text-purple-400">Verb Conjugation Practice</span>
             </div>
 
             <!-- Tense Selection Selector -->
             <div class="flex justify-center mb-6">
-                <div class="bg-slate-900/90 border border-slate-800 p-1 rounded-xl flex space-x-1 max-w-xs w-full">
+                <div class="bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 p-1 rounded-xl flex space-x-1 max-w-xs w-full">
                     <button id="tensePres" data-tense="pres" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-purple-600 text-white">Präsens</button>
-                    <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-slate-200">Präteritum</button>
-                    <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-slate-200">Perfekt</button>
+                    <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Präteritum</button>
+                    <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Perfekt</button>
                 </div>
             </div>
 
             <!-- Target Verb Display -->
             <div class="text-center my-4">
-                <h2 id="verbInfinitive" class="text-4xl sm:text-5xl font-black text-white tracking-tight">gehen</h2>
-                <p id="verbMeaning" class="text-slate-400 text-lg mt-1 font-medium italic">to go</p>
+                <h2 id="verbInfinitive" class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">gehen</h2>
+                <p id="verbMeaning" class="text-slate-500 dark:text-slate-400 text-lg mt-1 font-medium italic">to go</p>
             </div>
 
             <!-- Conjugation Grid Input -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto my-6">
                 <!-- ich -->
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
-                    <span class="text-xs font-bold text-purple-400 w-16">ich</span>
-                    <input type="text" id="conj_ich" placeholder="e.g. gehe" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">ich</span>
+                    <input type="text" id="conj_ich" placeholder="e.g. gehe" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <!-- du -->
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
-                    <span class="text-xs font-bold text-purple-400 w-16">du</span>
-                    <input type="text" id="conj_du" placeholder="e.g. gehst" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">du</span>
+                    <input type="text" id="conj_du" placeholder="e.g. gehst" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <!-- er/sie/es -->
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
-                    <span class="text-xs font-bold text-purple-400 w-16">er/sie/es</span>
-                    <input type="text" id="conj_er" placeholder="e.g. geht" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">er/sie/es</span>
+                    <input type="text" id="conj_er" placeholder="e.g. geht" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <!-- wir -->
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
-                    <span class="text-xs font-bold text-purple-400 w-16">wir</span>
-                    <input type="text" id="conj_wir" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">wir</span>
+                    <input type="text" id="conj_wir" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <!-- ihr -->
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
-                    <span class="text-xs font-bold text-purple-400 w-16">ihr</span>
-                    <input type="text" id="conj_ihr" placeholder="e.g. geht" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">ihr</span>
+                    <input type="text" id="conj_ihr" placeholder="e.g. geht" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
                 <!-- sie/Sie -->
-                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
-                    <span class="text-xs font-bold text-purple-400 w-16">sie/Sie</span>
-                    <input type="text" id="conj_sie" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-600 dark:text-purple-400 w-16">sie/Sie</span>
+                    <input type="text" id="conj_sie" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
             </div>
 
@@ -296,11 +298,11 @@
                 <button id="checkVerbBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-purple-600/30 transition-all active:scale-[0.99] text-base">
                     Check Conjugations
                 </button>
-                <button id="toggleTableBtn" class="bg-purple-950/60 hover:bg-purple-900/80 text-purple-300 font-semibold py-3.5 px-4 rounded-xl border border-purple-800/60 transition-all flex items-center space-x-2 text-sm" title="Hotkey: Tab">
+                <button id="toggleTableBtn" class="bg-purple-100 dark:bg-purple-950/60 hover:bg-purple-200 dark:hover:bg-purple-900/80 text-purple-700 dark:text-purple-300 font-semibold py-3.5 px-4 rounded-xl border border-purple-300 dark:border-purple-800/60 transition-all flex items-center space-x-2 text-sm" title="Hotkey: Tab">
                     <span>📚 Learn</span>
-                    <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] bg-purple-900/80 text-purple-200 rounded border border-purple-700/60 font-mono">Tab</kbd>
+                    <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] bg-purple-200 dark:bg-purple-900/80 text-purple-800 dark:text-purple-200 rounded border border-purple-300 dark:border-purple-700/60 font-mono">Tab</kbd>
                 </button>
-                <button id="skipVerbBtn" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-800 transition-all">
+                <button id="skipVerbBtn" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
                     Skip
                 </button>
             </div>
@@ -310,12 +312,46 @@
         </section>
     </main>
 
-    <footer class="border-t border-slate-800 bg-slate-950 py-4 text-center text-xs text-slate-500">
-        <p>Deutsch Dojo &bull; <a href="https://www.glenacota.me/" class="text-yellow-400 underline">glenacota</a> &bull; 2026</p>
+    <!-- Centered Theme Toggle directly above footer -->
+    <div class="py-4 flex justify-center items-center">
+        <button id="themeToggleBtn" aria-label="Toggle Light/Dark Theme" class="bg-white dark:bg-slate-950/80 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-800 shadow-md transition-all flex items-center space-x-2 text-xs font-semibold">
+            <span id="themeIcon">🌙</span>
+            <span id="themeLabel">Dark Mode</span>
+        </button>
+    </div>
+
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-4 text-center text-xs text-slate-500 transition-colors duration-200">
+        <p>Deutsch Dojo &bull; <a href="https://www.glenacota.me/" class="text-amber-600 dark:text-yellow-400 underline">glenacota</a> &bull; 2026</p>
     </footer>
 
-
     <script>
+        // Theme Engine
+        function initTheme() {
+            const storedTheme = localStorage.getItem('dm_theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+                updateThemeUI(true);
+            } else {
+                document.documentElement.classList.remove('dark');
+                updateThemeUI(false);
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('dm_theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+        }
+
+        function updateThemeUI(isDark) {
+            const icon = document.getElementById('themeIcon');
+            const label = document.getElementById('themeLabel');
+            if (icon) icon.textContent = isDark ? '🌙' : '☀️';
+            if (label) label.textContent = isDark ? 'Dark Mode' : 'Light Mode';
+        }
+
         // Audio Synthesizer via Web Audio API
         class SoundFX {
             constructor() {
@@ -539,9 +575,9 @@
             modalVerbTitle: document.getElementById('modalVerbTitle'),
             modalVerbMeaning: document.getElementById('modalVerbMeaning'),
             modalTableBody: document.getElementById('modalTableBody'),
-            // Toast
             milestoneToast: document.getElementById('milestoneToast'),
-            milestoneToastText: document.getElementById('milestoneToastText')
+            milestoneToastText: document.getElementById('milestoneToastText'),
+            themeToggleBtn: document.getElementById('themeToggleBtn')
         };
 
         // Person labels and index mapping
@@ -587,6 +623,7 @@
         }
 
         function initApp() {
+            initTheme();
             updateDashboardUI();
             bindEvents();
             nextNoun();
@@ -707,7 +744,7 @@
             // Reset Gender Buttons
             elements.genderBtns.forEach(btn => {
                 btn.setAttribute('aria-pressed', 'false');
-                btn.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-950/60');
+                btn.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-100', 'dark:bg-indigo-950/60');
             });
         }
 
@@ -718,7 +755,7 @@
             const userPlural = elements.pluralInput.value.trim();
 
             if (!userGender) {
-                showFeedback(elements.nounFeedback, '⚠️ Please select a gender (der, die, or das).', 'bg-amber-900/40 text-amber-200 border border-amber-800');
+                showFeedback(elements.nounFeedback, '⚠️ Please select a gender (der, die, or das).', 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-800');
                 return;
             }
 
@@ -726,13 +763,13 @@
             const isPluralCorrect = userPlural.toLowerCase() === state.currentNoun.p.toLowerCase();
 
             if (isGenderCorrect && isPluralCorrect) {
-                showFeedback(elements.nounFeedback, `🎉 Perfect! ${state.currentNoun.g} ${state.currentNoun.w}, Plural: die ${state.currentNoun.p} (+15 XP)`, 'bg-emerald-950/80 text-emerald-200 border border-emerald-800');
+                showFeedback(elements.nounFeedback, `🎉 Perfect! ${state.currentNoun.g} ${state.currentNoun.w}, Plural: die ${state.currentNoun.p} (+15 XP)`, 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800');
                 handleStreakIncrement(15);
                 setTimeout(nextNoun, 1300);
             } else {
                 let msg = `❌ Incorrect. Correct answer: `;
-                msg += `<strong class="text-white">${state.currentNoun.g} ${state.currentNoun.w}</strong> (Plural: <strong class="text-white">die ${state.currentNoun.p}</strong>)`;
-                showFeedback(elements.nounFeedback, msg, 'bg-rose-950/80 text-rose-200 border border-rose-800');
+                msg += `<strong>${state.currentNoun.g} ${state.currentNoun.w}</strong> (Plural: <strong>die ${state.currentNoun.p}</strong>)`;
+                showFeedback(elements.nounFeedback, msg, 'bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-800');
                 resetStreak();
             }
         }
@@ -787,13 +824,13 @@
             });
 
             if (allCorrect) {
-                showFeedback(elements.verbFeedback, `🎉 Excellent! Perfect conjugation for "${state.currentVerb.w}"! (+30 XP)`, 'bg-emerald-950/80 text-emerald-200 border border-emerald-800');
+                showFeedback(elements.verbFeedback, `🎉 Excellent! Perfect conjugation for "${state.currentVerb.w}"! (+30 XP)`, 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800');
                 handleStreakIncrement(30);
                 setTimeout(nextVerb, 1500);
             } else {
                 let msg = `❌ Incorrect. Correct conjugations: `;
                 msg += `ich <strong>${targetConjugations[0]}</strong>, du <strong>${targetConjugations[1]}</strong>, er/sie/es <strong>${targetConjugations[2]}</strong>, wir <strong>${targetConjugations[3]}</strong>, ihr <strong>${targetConjugations[4]}</strong>, sie/Sie <strong>${targetConjugations[5]}</strong>.`;
-                showFeedback(elements.verbFeedback, msg, 'bg-rose-950/80 text-rose-200 border border-rose-800');
+                showFeedback(elements.verbFeedback, msg, 'bg-rose-100 dark:bg-rose-950/80 text-rose-900 dark:text-rose-200 border border-rose-300 dark:border-rose-800');
                 resetStreak();
             }
         }
@@ -811,11 +848,11 @@
             const perf = verb.perf || [];
 
             elements.modalTableBody.innerHTML = persons.map(p => `
-                <tr class="hover:bg-slate-800/40 transition-colors">
-                    <td class="py-2.5 px-3 font-sans font-bold text-slate-400 text-xs">${p.label}</td>
-                    <td class="py-2.5 px-3 text-emerald-300 font-medium">${pres[p.idx] || '-'}</td>
-                    <td class="py-2.5 px-3 text-cyan-300 font-medium">${praet[p.idx] || '-'}</td>
-                    <td class="py-2.5 px-3 text-purple-300 font-medium">${perf[p.idx] || '-'}</td>
+                <tr class="hover:bg-slate-100 dark:hover:bg-slate-800/40 transition-colors">
+                    <td class="py-2.5 px-3 font-sans font-bold text-slate-500 dark:text-slate-400 text-xs">${p.label}</td>
+                    <td class="py-2.5 px-3 text-emerald-600 dark:text-emerald-300 font-medium">${pres[p.idx] || '-'}</td>
+                    <td class="py-2.5 px-3 text-cyan-600 dark:text-cyan-300 font-medium">${praet[p.idx] || '-'}</td>
+                    <td class="py-2.5 px-3 text-purple-600 dark:text-purple-300 font-medium">${perf[p.idx] || '-'}</td>
                 </tr>
             `).join('');
         }
@@ -847,6 +884,9 @@
         }
 
         function bindEvents() {
+            // Theme toggle
+            elements.themeToggleBtn.addEventListener('click', toggleTheme);
+
             // Tab switching
             elements.tabNouns.addEventListener('click', () => switchTab('nouns'));
             elements.tabVerbs.addEventListener('click', () => switchTab('verbs'));
@@ -876,11 +916,11 @@
                 btn.addEventListener('click', (e) => {
                     elements.tenseBtns.forEach(b => {
                         b.classList.remove('bg-purple-600', 'text-white');
-                        b.classList.add('text-slate-400');
+                        b.classList.add('text-slate-600', 'dark:text-slate-400');
                     });
                     const selectedBtn = e.currentTarget;
                     selectedBtn.classList.add('bg-purple-600', 'text-white');
-                    selectedBtn.classList.remove('text-slate-400');
+                    selectedBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
                     
                     state.selectedTense = selectedBtn.dataset.tense;
                     
@@ -906,11 +946,11 @@
                 btn.addEventListener('click', (e) => {
                     elements.genderBtns.forEach(b => {
                         b.setAttribute('aria-pressed', 'false');
-                        b.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-950/60');
+                        b.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-100', 'dark:bg-indigo-950/60');
                     });
                     const selectedBtn = e.currentTarget;
                     selectedBtn.setAttribute('aria-pressed', 'true');
-                    selectedBtn.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-950/60');
+                    selectedBtn.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-100', 'dark:bg-indigo-950/60');
                     state.selectedGender = selectedBtn.dataset.gender;
                 });
             });
@@ -927,6 +967,7 @@
             elements.skipVerbBtn.addEventListener('click', nextVerb);
             Object.values(elements.conjInputs).forEach(input => {
                 input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') checkVerbAnswer();
                 });
             });
         }
@@ -935,13 +976,13 @@
             state.activeTab = tab;
             if (tab === 'nouns') {
                 elements.tabNouns.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md";
-                elements.tabVerbs.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200";
+                elements.tabVerbs.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200";
                 elements.nounSection.classList.remove('hidden');
                 elements.verbSection.classList.add('hidden');
                 closeModal();
             } else {
                 elements.tabVerbs.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-purple-600 text-white shadow-md";
-                elements.tabNouns.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200";
+                elements.tabNouns.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200";
                 elements.verbSection.classList.remove('hidden');
                 elements.nounSection.classList.add('hidden');
             }

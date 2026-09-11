@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deutsch Dojo - Interactive German Trainer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        pixel: ['"Press Start 2P"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-short': 'bounceShort 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        bounceShort: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-6px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        canvas#fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Streak Tier Color Variations */
+        .tier-0 { background: linear-gradient(90deg, #f97316, #fbbf24); } /* Orange / Amber */
+        .tier-1 { background: linear-gradient(90deg, #10b981, #34d399); } /* Emerald */
+        .tier-2 { background: linear-gradient(90deg, #06b6d4, #38bdf8); } /* Cyan / Sky */
+        .tier-3 { background: linear-gradient(90deg, #8b5cf6, #c084fc); } /* Purple / Violet */
+        .tier-4 { background: linear-gradient(90deg, #eab308, #fef08a); } /* Gold */
+        .tier-5 {
+            background: linear-gradient(90deg, #ef4444, #f97316, #eab308, #10b981, #06b6d4, #8b5cf6);
+            background-size: 200% 200%;
+            animation: rainbowShift 3s ease infinite;
+        }
+
+        @keyframes rainbowShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Pixel Firework Toast Notice */
+        .pixel-border {
+            box-shadow: 
+                -4px 0 0 0 #000,
+                4px 0 0 0 #000,
+                0 -4px 0 0 #000,
+                0 4px 0 0 #000;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <canvas id="fireworksCanvas"></canvas>
+
+    <!-- Milestone Banner Toast (Hidden by default) -->
+    <div id="milestoneToast" class="fixed top-8 left-1/2 -translate-x-1/2 z-50 hidden transition-all transform duration-300">
+        <div class="bg-amber-400 text-slate-950 font-pixel text-xs sm:text-sm px-6 py-4 rounded-none border-4 border-slate-950 shadow-2xl flex items-center space-x-3 animate-bounce">
+            <span class="text-xl">🎆</span>
+            <div>
+                <div class="font-bold uppercase tracking-wider">Milestone Reached!</div>
+                <div id="milestoneToastText" class="text-[10px] opacity-90">10 Streak Bonus Unlocked!</div>
+            </div>
+            <span class="text-xl">🚀</span>
+        </div>
+    </div>
+
+    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/30">
+                    🥋
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-none text-slate-100">Deutsch Dojo</h1>
+                    <p class="text-xs text-slate-400 mt-1">Interactive German Trainer</p>
+                </div>
+            </div>
+
+            <!-- Gamification Dashboard -->
+            <div class="flex items-center space-x-4 bg-slate-900/90 border border-slate-800 px-4 py-2 rounded-xl">
+                <!-- XP -->
+                <div class="flex items-center space-x-1.5" title="Total Experience Points">
+                    <span class="text-amber-400 text-base">🥨</span>
+                    <span id="xpDisplay" class="font-bold text-slate-200 text-sm">0 XP</span>
+                </div>
+                <div class="h-4 w-px bg-slate-800"></div>
+                <!-- Current Streak -->
+                <div class="flex items-center space-x-1.5" title="Current Streak">
+                    <span class="text-orange-500 text-base">🔥</span>
+                    <span id="streakDisplay" class="font-bold text-slate-200 text-sm">0</span>
+                </div>
+                <div class="h-4 w-px bg-slate-800"></div>
+                <!-- Best Streak -->
+                <div class="flex items-center space-x-1.5" title="Personal Record Streak">
+                    <span class="text-yellow-400 text-base">🏆</span>
+                    <span id="maxStreakDisplay" class="font-bold text-slate-200 text-sm">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10-Streak Progress Bar Section -->
+        <div class="max-w-4xl mx-auto px-4 pb-3">
+            <div class="flex items-center justify-between text-xs font-medium text-slate-400 mb-1.5">
+                <span class="flex items-center space-x-1">
+                    <span>Milestone Progress</span>
+                    <span id="tierLabel" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-indigo-400 font-semibold uppercase tracking-wider">Tier 1</span>
+                </span>
+                <span id="progressText" class="font-mono text-slate-300">0 / 10 Streak</span>
+            </div>
+            <!-- Dynamic Progress Track -->
+            <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-700/50 shadow-inner">
+                <div id="progressBar" class="h-full rounded-full transition-all duration-500 ease-out tier-0 w-0"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-6 flex-grow w-full">
+        <!-- Navigation Tabs -->
+        <div class="flex justify-center mb-6">
+            <div class="bg-slate-950/80 p-1 rounded-xl border border-slate-800 flex space-x-1">
+                <button id="tabNouns" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md">
+                    <span>🏷️ Nouns & Plurals</span>
+                </button>
+                <button id="tabVerbs" class="px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200">
+                    <span>⚡ Verb Conjugation</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- NOUN PRACTICE CARD -->
+        <section id="nounSection" class="bg-slate-950/60 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-4">
+                <span class="uppercase tracking-wider font-semibold text-indigo-400">Noun Practice</span>
+            </div>
+
+            <!-- Target Word Display -->
+            <div class="text-center my-6">
+                <h2 id="nounWord" class="text-4xl sm:text-5xl font-black text-white tracking-tight">Loading...</h2>
+                <p id="nounMeaning" class="text-slate-400 text-lg mt-2 font-medium italic">meaning</p>
+            </div>
+
+            <!-- Gender Selection Buttons -->
+            <div class="mb-6">
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 text-center mb-3">Select Grammatical Gender</label>
+                <div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
+                    <button type="button" data-gender="der" class="gender-btn py-3 rounded-xl border border-slate-700 bg-slate-900 text-blue-400 font-bold text-lg hover:border-blue-500 hover:bg-blue-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" aria-pressed="false">
+                        der
+                    </button>
+                    <button type="button" data-gender="die" class="gender-btn py-3 rounded-xl border border-slate-700 bg-slate-900 text-rose-400 font-bold text-lg hover:border-rose-500 hover:bg-rose-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-rose-500" aria-pressed="false">
+                        die
+                    </button>
+                    <button type="button" data-gender="das" class="gender-btn py-3 rounded-xl border border-slate-700 bg-slate-900 text-amber-400 font-bold text-lg hover:border-amber-500 hover:bg-amber-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500" aria-pressed="false">
+                        das
+                    </button>
+                </div>
+            </div>
+
+            <!-- Plural Form Input -->
+            <div class="max-w-md mx-auto mb-6">
+                <label for="pluralInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Plural Form (die ...)</label>
+                <input type="text" id="pluralInput" placeholder="e.g. Kinder" autocomplete="off" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-center font-medium text-lg">
+            </div>
+
+            <!-- Action Controls -->
+            <div class="max-w-md mx-auto flex gap-3">
+                <button id="checkNounBtn" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.99] text-base">
+                    Check Answer
+                </button>
+                <button id="skipNounBtn" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-800 transition-all">
+                    Skip
+                </button>
+            </div>
+
+            <!-- Feedback Banner -->
+            <div id="nounFeedback" class="max-w-md mx-auto mt-4 p-4 rounded-xl text-center font-semibold text-sm hidden transition-all"></div>
+        </section>
+
+        <!-- VERB PRACTICE CARD (Hidden initially) -->
+        <section id="verbSection" class="bg-slate-950/60 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden hidden">
+            <div class="flex items-center justify-between text-xs text-slate-400 mb-4">
+                <span class="uppercase tracking-wider font-semibold text-purple-400">Verb Conjugation Practice</span>
+            </div>
+
+            <!-- Tense Selection Selector -->
+            <div class="flex justify-center mb-6">
+                <div class="bg-slate-900/90 border border-slate-800 p-1 rounded-xl flex space-x-1 max-w-xs w-full">
+                    <button id="tensePres" data-tense="pres" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all bg-purple-600 text-white">Präsens</button>
+                    <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-slate-200">Präteritum</button>
+                    <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-slate-200">Perfekt</button>
+                </div>
+            </div>
+
+            <!-- Target Verb Display -->
+            <div class="text-center my-4">
+                <h2 id="verbInfinitive" class="text-4xl sm:text-5xl font-black text-white tracking-tight">gehen</h2>
+                <p id="verbMeaning" class="text-slate-400 text-lg mt-1 font-medium italic">to go</p>
+            </div>
+
+            <!-- Conjugation Grid Input -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl mx-auto my-6">
+                <!-- ich -->
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-400 w-16">ich</span>
+                    <input type="text" id="conj_ich" placeholder="e.g. gehe" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                </div>
+                <!-- du -->
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-400 w-16">du</span>
+                    <input type="text" id="conj_du" placeholder="e.g. gehst" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                </div>
+                <!-- er/sie/es -->
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-400 w-16">er/sie/es</span>
+                    <input type="text" id="conj_er" placeholder="e.g. geht" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                </div>
+                <!-- wir -->
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-400 w-16">wir</span>
+                    <input type="text" id="conj_wir" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                </div>
+                <!-- ihr -->
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-400 w-16">ihr</span>
+                    <input type="text" id="conj_ihr" placeholder="e.g. geht" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                </div>
+                <!-- sie/Sie -->
+                <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 flex items-center justify-between space-x-2">
+                    <span class="text-xs font-bold text-purple-400 w-16">sie/Sie</span>
+                    <input type="text" id="conj_sie" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-100 placeholder-slate-600 focus:outline-none focus:border-purple-500">
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="max-w-xl mx-auto flex gap-3">
+                <button id="checkVerbBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-purple-600/30 transition-all active:scale-[0.99] text-base">
+                    Check Conjugations
+                </button>
+                <button id="skipVerbBtn" class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-800 transition-all">
+                    Skip
+                </button>
+            </div>
+
+            <!-- Feedback Banner -->
+            <div id="verbFeedback" class="max-w-xl mx-auto mt-4 p-4 rounded-xl text-center font-semibold text-sm hidden transition-all"></div>
+        </section>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950 py-4 text-center text-xs text-slate-500">
+        <p>Deutsch Dojo &bull; <a href="https://www.glenacota.me/" class="text-yellow-400 underline">glenacota</a> &bull; 2026</p>
+    </footer>
+
+
+    <script>
+        // Audio Synthesizer via Web Audio API
+        class SoundFX {
+            constructor() {
+                this.ctx = null;
+            }
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+            playCorrect() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc1 = this.ctx.createOscillator();
+                const osc2 = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc1.type = 'sine';
+                osc2.type = 'triangle';
+                osc1.frequency.setValueAtTime(523.25, now); // C5
+                osc1.frequency.setValueAtTime(659.25, now + 0.1); // E5
+
+                osc2.frequency.setValueAtTime(1046.50, now + 0.1); // C6
+
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 0.35);
+                osc2.stop(now + 0.35);
+            }
+            playWrong() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.exponentialRampToValueAtTime(110, now + 0.25);
+
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 0.25);
+            }
+            playMilestoneFanfare() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const notes = [440, 554.37, 659.25, 880]; // A major chord arpeggio
+                notes.forEach((freq, idx) => {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    const noteTime = now + idx * 0.08;
+
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(freq, noteTime);
+
+                    gain.gain.setValueAtTime(0.12, noteTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, noteTime + 0.3);
+
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    osc.start(noteTime);
+                    osc.stop(noteTime + 0.3);
+                });
+            }
+        }
+        const sfx = new SoundFX();
+
+        class PixelFireworksEngine {
+            constructor(canvasId) {
+                this.canvas = document.getElementById(canvasId);
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.animId = null;
+                this.resize();
+                window.addEventListener('resize', () => this.resize());
+            }
+
+            resize() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+
+            triggerShow() {
+                const colors = ['#f59e0b', '#10b981', '#06b6d4', '#8b5cf6', '#ec4899', '#efa107', '#ffffff'];
+                // Launch multiple bursts
+                for (let burst = 0; burst < 6; burst++) {
+                    setTimeout(() => {
+                        const x = Math.random() * (this.canvas.width * 0.7) + (this.canvas.width * 0.15);
+                        const y = Math.random() * (this.canvas.height * 0.4) + (this.canvas.height * 0.1);
+                        this.createBurst(x, y, colors);
+                    }, burst * 220);
+                }
+            }
+
+            createBurst(x, y, colors) {
+                const count = 60;
+                const pixelSize = 4;
+                for (let i = 0; i < count; i++) {
+                    const angle = (Math.PI * 2 * i) / count + (Math.random() * 0.2);
+                    const speed = Math.random() * 7 + 2;
+                    this.particles.push({
+                        x: x,
+                        y: y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        size: Math.random() > 0.5 ? pixelSize : pixelSize * 1.5,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        alpha: 1,
+                        decay: Math.random() * 0.02 + 0.015,
+                        gravity: 0.12
+                    });
+                }
+                if (!this.animId) {
+                    this.animate();
+                }
+            }
+
+            animate() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity;
+                    p.alpha -= p.decay;
+
+                    if (p.alpha <= 0) {
+                        this.particles.splice(i, 1);
+                        continue;
+                    }
+
+                    this.ctx.fillStyle = p.color;
+                    this.ctx.globalAlpha = Math.max(0, p.alpha);
+                    // Render crisp pixel squares
+                    this.ctx.fillRect(Math.floor(p.x), Math.floor(p.y), p.size, p.size);
+                }
+
+                if (this.particles.length > 0) {
+                    this.animId = requestAnimationFrame(() => this.animate());
+                } else {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.animId = null;
+                }
+            }
+        }
+        const fireworks = new PixelFireworksEngine('fireworksCanvas');
+
+        // Data arrays
+        let nounsData = [];
+        let verbsData = [];
+
+        // Application State
+        let state = {
+            xp: parseInt(localStorage.getItem('dm_xp') || '0', 10),
+            streak: parseInt(localStorage.getItem('dm_streak') || '0', 10),
+            maxStreak: parseInt(localStorage.getItem('dm_max_streak') || '0', 10),
+            selectedGender: null,
+            selectedTense: 'pres', // Default tense: Present (pres)
+            currentNoun: null,
+            currentVerb: null,
+            activeTab: 'nouns',
+            // Spaced History Buffer (Previous 30 iterations tracking)
+            nounHistory: [],
+            verbHistory: []
+        };
+
+        // DOM Element References
+        const elements = {
+            xpDisplay: document.getElementById('xpDisplay'),
+            streakDisplay: document.getElementById('streakDisplay'),
+            maxStreakDisplay: document.getElementById('maxStreakDisplay'),
+            progressBar: document.getElementById('progressBar'),
+            progressText: document.getElementById('progressText'),
+            tierLabel: document.getElementById('tierLabel'),
+            tabNouns: document.getElementById('tabNouns'),
+            tabVerbs: document.getElementById('tabVerbs'),
+            nounSection: document.getElementById('nounSection'),
+            verbSection: document.getElementById('verbSection'),
+            // Nouns
+            nounWord: document.getElementById('nounWord'),
+            nounMeaning: document.getElementById('nounMeaning'),
+            pluralInput: document.getElementById('pluralInput'),
+            checkNounBtn: document.getElementById('checkNounBtn'),
+            skipNounBtn: document.getElementById('skipNounBtn'),
+            nounFeedback: document.getElementById('nounFeedback'),
+            genderBtns: document.querySelectorAll('.gender-btn'),
+            // Verbs
+            verbInfinitive: document.getElementById('verbInfinitive'),
+            verbMeaning: document.getElementById('verbMeaning'),
+            checkVerbBtn: document.getElementById('checkVerbBtn'),
+            skipVerbBtn: document.getElementById('skipVerbBtn'),
+            verbFeedback: document.getElementById('verbFeedback'),
+            tenseBtns: document.querySelectorAll('.tense-btn'),
+            conjInputs: {
+                ich: document.getElementById('conj_ich'),
+                du: document.getElementById('conj_du'),
+                er: document.getElementById('conj_er'),
+                wir: document.getElementById('conj_wir'),
+                ihr: document.getElementById('conj_ihr'),
+                sie: document.getElementById('conj_sie')
+            },
+            // Toast
+            milestoneToast: document.getElementById('milestoneToast'),
+            milestoneToastText: document.getElementById('milestoneToastText')
+        };
+
+        // Person-to-index mapping for verb conjugation arrays
+        const personIndices = {
+            ich: 0,
+            du: 1,
+            er: 2,
+            wir: 3,
+            ihr: 4,
+            sie: 5
+        };
+
+        async function loadExternalData() {
+            try {
+                // Fetch both JSON files in parallel
+                const [nounsResponse, verbsResponse] = await Promise.all([
+                    fetch('./nouns.json'),
+                    fetch('./verbs.json')
+                ]);
+
+                if (!nounsResponse.ok || !verbsResponse.ok) {
+                    throw new Error('Failed to load JSON datasets.');
+                }
+
+                nounsData = await nounsResponse.json();
+                verbsData = await verbsResponse.json();
+
+                // Initialize application after data is ready
+                initApp();
+            } catch (error) {
+                console.error('Error loading language datasets:', error);
+                alert('Could not load vocabulary data. Please check your network or local server.');
+            }
+        }
+
+        function initApp() {
+            updateDashboardUI();
+            bindEvents();
+            nextNoun();
+            nextVerb();
+        }
+
+        // Save State to LocalStorage
+        function saveState() {
+            localStorage.setItem('dm_xp', state.xp);
+            localStorage.setItem('dm_streak', state.streak);
+            localStorage.setItem('dm_max_streak', state.maxStreak);
+        }
+
+        // Update Stats & 10-Streak Bar UI
+        function updateDashboardUI() {
+            elements.xpDisplay.textContent = `${state.xp} XP`;
+            elements.streakDisplay.textContent = state.streak;
+            elements.maxStreakDisplay.textContent = state.maxStreak;
+
+            // Calculate 10-streak progress and tier color shifts
+            const streakInTier = state.streak % 10;
+            const currentTier = Math.floor(state.streak / 10);
+            const progressPercent = (streakInTier / 10) * 100;
+
+            elements.progressText.textContent = `${streakInTier} / 10 Streak`;
+            elements.progressBar.style.width = `${progressPercent}%`;
+
+            // Dynamic Tier Labeling
+            const tierNames = ['Bronze', 'Emerald', 'Cyan', 'Purple', 'Gold Master', 'Rainbow God'];
+            const displayTierName = tierNames[Math.min(currentTier, tierNames.length - 1)];
+            elements.tierLabel.textContent = `Tier ${currentTier + 1}: ${displayTierName}`;
+
+            // Apply Dynamic Tier Colors to Progress Bar
+            elements.progressBar.className = `h-full rounded-full transition-all duration-500 ease-out tier-${Math.min(currentTier, 5)}`;
+        }
+
+        function getNextNounWithSpacedHistory() {
+            let available = nounsData.filter(item => !state.nounHistory.includes(item.w));
+            
+            if (available.length === 0) {
+                state.nounHistory = state.nounHistory.slice(-5);
+                available = nounsData.filter(item => !state.nounHistory.includes(item.w));
+            }
+
+            const chosen = available[Math.floor(Math.random() * available.length)];
+            
+            state.nounHistory.push(chosen.w);
+            if (state.nounHistory.length > 30) {
+                state.nounHistory.shift();
+            }
+
+            return chosen;
+        }
+
+        function getNextVerbWithSpacedHistory() {
+            let available = verbsData.filter(item => !state.verbHistory.includes(item.w));
+            
+            if (available.length === 0) {
+                state.verbHistory = state.verbHistory.slice(-5);
+                available = verbsData.filter(item => !state.verbHistory.includes(item.w));
+            }
+
+            const chosen = available[Math.floor(Math.random() * available.length)];
+            
+            state.verbHistory.push(chosen.w);
+            if (state.verbHistory.length > 30) {
+                state.verbHistory.shift();
+            }
+
+            return chosen;
+        }
+
+        function handleStreakIncrement(pointsAwarded = 10) {
+            state.streak += 1;
+            state.xp += pointsAwarded;
+            if (state.streak > state.maxStreak) {
+                state.maxStreak = state.streak;
+            }
+            saveState();
+            updateDashboardUI();
+
+            if (state.streak > 0 && state.streak % 10 === 0) {
+                triggerMilestoneReward();
+            } else {
+                sfx.playCorrect();
+            }
+        }
+
+        function resetStreak() {
+            state.streak = 0;
+            saveState();
+            updateDashboardUI();
+            sfx.playWrong();
+        }
+
+        function triggerMilestoneReward() {
+            sfx.playMilestoneFanfare();
+            fireworks.triggerShow();
+
+            const currentTier = Math.floor(state.streak / 10);
+            elements.milestoneToastText.textContent = `🔥 Magnificent ${state.streak} Streak! Tier ${currentTier + 1} Unlocked!`;
+            elements.milestoneToast.classList.remove('hidden');
+            
+            setTimeout(() => {
+                elements.milestoneToast.classList.add('hidden');
+            }, 3500);
+        }
+
+        function nextNoun() {
+            state.currentNoun = getNextNounWithSpacedHistory();
+            state.selectedGender = null;
+
+            elements.nounWord.textContent = state.currentNoun.w;
+            elements.nounMeaning.textContent = "🇬🇧 " + state.currentNoun.m;
+            elements.pluralInput.value = '';
+            elements.nounFeedback.classList.add('hidden');
+
+            // Reset Gender Buttons
+            elements.genderBtns.forEach(btn => {
+                btn.setAttribute('aria-pressed', 'false');
+                btn.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-950/60');
+            });
+        }
+
+        function checkNounAnswer() {
+            if (!state.currentNoun) return;
+
+            const userGender = state.selectedGender;
+            const userPlural = elements.pluralInput.value.trim();
+
+            if (!userGender) {
+                showFeedback(elements.nounFeedback, '⚠️ Please select a gender (der, die, or das).', 'bg-amber-900/40 text-amber-200 border border-amber-800');
+                return;
+            }
+
+            const isGenderCorrect = userGender === state.currentNoun.g;
+            const isPluralCorrect = userPlural.toLowerCase() === state.currentNoun.p.toLowerCase();
+
+            if (isGenderCorrect && isPluralCorrect) {
+                showFeedback(elements.nounFeedback, `🎉 Perfect! ${state.currentNoun.g} ${state.currentNoun.w}, Plural: die ${state.currentNoun.p} (+15 XP)`, 'bg-emerald-950/80 text-emerald-200 border border-emerald-800');
+                handleStreakIncrement(15);
+                setTimeout(nextNoun, 1300);
+            } else {
+                let msg = `❌ Incorrect. Correct answer: `;
+                msg += `<strong class="text-white">${state.currentNoun.g} ${state.currentNoun.w}</strong> (Plural: <strong class="text-white">die ${state.currentNoun.p}</strong>)`;
+                showFeedback(elements.nounFeedback, msg, 'bg-rose-950/80 text-rose-200 border border-rose-800');
+                resetStreak();
+            }
+        }
+
+        function nextVerb() {
+            state.currentVerb = getNextVerbWithSpacedHistory();
+            elements.verbInfinitive.textContent = state.currentVerb.w;
+            elements.verbMeaning.textContent = "🇬🇧 " + state.currentVerb.m;
+            elements.verbFeedback.classList.add('hidden');
+        }
+
+        function checkVerbAnswer() {
+            if (!state.currentVerb) return;
+
+            // Get target tense array ("pres", "praet", or "perf")
+            const targetConjugations = state.currentVerb[state.selectedTense];
+            if (!targetConjugations) return;
+
+            let allCorrect = true;
+
+            Object.keys(elements.conjInputs).forEach(person => {
+                const inputEl = elements.conjInputs[person];
+                const userVal = inputEl.value.trim().toLowerCase();
+                const idx = personIndices[person];
+                const expected = targetConjugations[idx].toLowerCase();
+
+                if (userVal === expected) {
+                    inputEl.classList.add('border-emerald-500');
+                    inputEl.classList.remove('border-rose-500');
+                } else {
+                    inputEl.classList.add('border-rose-500');
+                    inputEl.classList.remove('border-emerald-500');
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                showFeedback(elements.verbFeedback, `🎉 Excellent! Perfect conjugation for "${state.currentVerb.w}"! (+30 XP)`, 'bg-emerald-950/80 text-emerald-200 border border-emerald-800');
+                handleStreakIncrement(30);
+                setTimeout(nextVerb, 1500);
+            } else {
+                let msg = `❌ Incorrect. Correct conjugations: `;
+                msg += `ich <strong>${targetConjugations[0]}</strong>, du <strong>${targetConjugations[1]}</strong>, er/sie/es <strong>${targetConjugations[2]}</strong>, wir <strong>${targetConjugations[3]}</strong>, ihr <strong>${targetConjugations[4]}</strong>, sie/Sie <strong>${targetConjugations[5]}</strong>.`;
+                showFeedback(elements.verbFeedback, msg, 'bg-rose-950/80 text-rose-200 border border-rose-800');
+                resetStreak();
+            }
+        }
+
+        function showFeedback(element, htmlContent, className) {
+            element.innerHTML = htmlContent;
+            element.className = `max-w-xl mx-auto mt-4 p-4 rounded-xl text-center font-semibold text-sm transition-all ${className}`;
+            element.classList.remove('hidden');
+        }
+
+        function bindEvents() {
+            // Tab switching
+            elements.tabNouns.addEventListener('click', () => switchTab('nouns'));
+            elements.tabVerbs.addEventListener('click', () => switchTab('verbs'));
+
+            // Tense selection buttons
+            elements.tenseBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    elements.tenseBtns.forEach(b => {
+                        b.classList.remove('bg-purple-600', 'text-white');
+                        b.classList.add('text-slate-400');
+                    });
+                    const selectedBtn = e.currentTarget;
+                    selectedBtn.classList.add('bg-purple-600', 'text-white');
+                    selectedBtn.classList.remove('text-slate-400');
+                    
+                    state.selectedTense = selectedBtn.dataset.tense;
+                    
+                    // Refresh verb state to update placeholders and validation targets
+                    if (state.currentVerb) {
+                        const tenseArray = state.currentVerb[state.selectedTense] || [];
+                        Object.keys(elements.conjInputs).forEach(person => {
+                            const input = elements.conjInputs[person];
+                            input.value = '';
+                            input.classList.remove('border-rose-500', 'border-emerald-500');
+                            const idx = personIndices[person];
+                            if (tenseArray[idx]) {
+                                input.placeholder = `e.g. ${tenseArray[idx]}`;
+                            }
+                        });
+                        elements.verbFeedback.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Gender selector buttons
+            elements.genderBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    elements.genderBtns.forEach(b => {
+                        b.setAttribute('aria-pressed', 'false');
+                        b.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-950/60');
+                    });
+                    const selectedBtn = e.currentTarget;
+                    selectedBtn.setAttribute('aria-pressed', 'true');
+                    selectedBtn.classList.add('ring-2', 'ring-indigo-500', 'bg-indigo-950/60');
+                    state.selectedGender = selectedBtn.dataset.gender;
+                });
+            });
+
+            // Noun Action buttons
+            elements.checkNounBtn.addEventListener('click', checkNounAnswer);
+            elements.skipNounBtn.addEventListener('click', nextNoun);
+            elements.pluralInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkNounAnswer();
+            });
+
+            // Verb Action buttons
+            elements.checkVerbBtn.addEventListener('click', checkVerbAnswer);
+            elements.skipVerbBtn.addEventListener('click', nextVerb);
+            Object.values(elements.conjInputs).forEach(input => {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') checkVerbAnswer();
+                });
+            });
+        }
+
+        function switchTab(tab) {
+            state.activeTab = tab;
+            if (tab === 'nouns') {
+                elements.tabNouns.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md";
+                elements.tabVerbs.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200";
+                elements.nounSection.classList.remove('hidden');
+                elements.verbSection.classList.add('hidden');
+            } else {
+                elements.tabVerbs.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-purple-600 text-white shadow-md";
+                elements.tabNouns.className = "px-5 py-2 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-400 hover:text-slate-200";
+                elements.verbSection.classList.remove('hidden');
+                elements.nounSection.classList.add('hidden');
+            }
+        }
+
+        // Initialize on Load
+        window.addEventListener('load', loadExternalData);
+    </script>
+</body>
+</html>

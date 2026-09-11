@@ -29,7 +29,7 @@ const AUTO_ADVANCE_DELAY_MS = {
 const HISTORY_MAX_SIZE = 30;   // how many recently-seen words we avoid repeating
 const HISTORY_RECYCLE_SIZE = 5; // kept entries when the pool is exhausted and reset
 
-const MILESTONE_INTERVAL = 5;     // streak count that triggers a belt promotion (reduced from 10 to 5)
+const MILESTONE_INTERVAL = 5;     // streak count that triggers a belt promotion
 const MAX_TIER_INDEX = 6;         // caps visual tier styling at belt index 6 (Black Belt)
 const MILESTONE_TOAST_DURATION_MS = 3500;
 
@@ -506,7 +506,20 @@ function nextNoun() {
 
     dom.nounWord.textContent = state.currentNoun.w;
     dom.nounMeaning.textContent = `🇬🇧 ${state.currentNoun.m}`;
-    dom.pluralInput.value = '';
+    
+    // Check if the loaded noun has an empty plural field
+    if (!state.currentNoun.p) {
+        dom.pluralInput.value = '';
+        dom.pluralInput.disabled = true;
+        dom.pluralInput.placeholder = 'no plural';
+        dom.pluralInput.classList.add('opacity-50', 'cursor-not-allowed');
+    } else {
+        dom.pluralInput.value = '';
+        dom.pluralInput.disabled = false;
+        dom.pluralInput.placeholder = 'e.g. Kinder';
+        dom.pluralInput.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+
     dom.nounFeedback.classList.add('hidden');
 
     dom.genderBtns.forEach((btn) => {
@@ -527,15 +540,22 @@ function checkNounAnswer() {
     }
 
     const isGenderCorrect = userGender === state.currentNoun.g;
-    const isPluralCorrect = userPlural.toLowerCase() === state.currentNoun.p.toLowerCase();
+    
+    // Determine if the noun has no plural and validate accordingly
+    const hasNoPlural = !state.currentNoun.p;
+    const isPluralCorrect = hasNoPlural || (userPlural.toLowerCase() === state.currentNoun.p.toLowerCase());
 
     if (isGenderCorrect && isPluralCorrect) {
-        const message = `🎉 Perfect! ${state.currentNoun.g} ${state.currentNoun.w}, Plural: die ${state.currentNoun.p} (+${XP_REWARD.noun} XP)`;
+        const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
+        const message = `🎉 Perfect! ${state.currentNoun.g} ${state.currentNoun.w}, Plural: ${pluralText} (+${XP_REWARD.noun} XP)`;
+        
         showFeedback(dom.nounFeedback, message, FEEDBACK_STYLE.success);
         handleStreakIncrement(XP_REWARD.noun);
         setTimeout(nextNoun, AUTO_ADVANCE_DELAY_MS.noun);
     } else {
-        const message = `❌ Incorrect. Correct answer: <strong>${state.currentNoun.g} ${state.currentNoun.w}</strong> (Plural: <strong>die ${state.currentNoun.p}</strong>)`;
+        const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
+        const message = `❌ Incorrect. Correct answer: <strong>${state.currentNoun.g} ${state.currentNoun.w}</strong> (Plural: <strong>${pluralText}</strong>)`;
+        
         showFeedback(dom.nounFeedback, message, FEEDBACK_STYLE.error);
         resetStreak();
     }

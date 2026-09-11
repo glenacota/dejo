@@ -923,21 +923,6 @@
                     selectedBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
                     
                     state.selectedTense = selectedBtn.dataset.tense;
-                    
-                    // Refresh verb state to update placeholders and validation targets
-                    if (state.currentVerb) {
-                        const tenseArray = state.currentVerb[state.selectedTense] || [];
-                        Object.keys(elements.conjInputs).forEach(person => {
-                            const input = elements.conjInputs[person];
-                            input.value = '';
-                            input.classList.remove('border-rose-500', 'border-emerald-500');
-                            const idx = personIndices[person];
-                            if (tenseArray[idx]) {
-                                input.placeholder = `e.g. ${tenseArray[idx]}`;
-                            }
-                        });
-                        elements.verbFeedback.classList.add('hidden');
-                    }
                 });
             });
 

@@ -28,13 +28,13 @@ const MAX_TIER_INDEX = 6;         // caps visual tier styling at belt index 6 (B
 const MILESTONE_TOAST_DURATION_MS = 3500;
 
 const BELT_NAMES = [
-    'White (Weiß)', 
-    'Yellow (Gelb)', 
-    'Orange (Orangen)', 
-    'Green (Grün)', 
-    'Blue (Blau)', 
-    'Brown (Braun)', 
-    'Black (Schwarz)'
+    'White Belt', 
+    'Yellow Belt', 
+    'Orange Belt', 
+    'Green Belt', 
+    'Blue Belt', 
+    'Brown Belt', 
+    'Black Belt'
 ];
 
 // Canonical person order shared by conjugation data, table rows and inputs.
@@ -475,7 +475,7 @@ function updateDashboardUI() {
     const currentTier = Math.floor(state.streak / MILESTONE_INTERVAL);
     const progressPercent = (streakInTier / MILESTONE_INTERVAL) * 100;
 
-    dom.progressText.textContent = `${streakInTier} / ${MILESTONE_INTERVAL} Streak`;
+    dom.progressText.textContent = `${streakInTier} / ${MILESTONE_INTERVAL}`;
     dom.progressBar.style.width = `${progressPercent}%`;
 
     const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];

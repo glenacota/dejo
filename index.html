@@ -172,7 +172,7 @@
     </div>
 
     <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 transition-colors duration-200">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between gap-2">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/30 german-flag-bg">
                     <img src="./assets/logo.png" alt="DEjo: Deutsch-Dojo">
@@ -186,28 +186,28 @@
             <!-- Gamification Dashboard -->
             <div class="flex items-center space-x-4 pl-4 py-2 text-lg text-indigo-600 dark:text-indigo-400">
                 <div class="flex items-center space-x-1.5" title="Current Streak">
-                    <span class="text-xs">🔥</span>
-                    <span id="streakDisplay" class="font-bold text-slate-800 dark:text-slate-200">1</span>
-                    <span class="text-xs">STREAK</span>
+                    <span class="lg:text-xs text-[11px]">🔥</span>
+                    <span id="streakDisplay" class="lg:text-xs text-[11px] font-bold text-slate-800 dark:text-slate-200">1</span>
+                    <span class="text-xs lg:block hidden">STREAK</span>
                 </div>
                 
                 <div class="flex items-center space-x-1.5" title="Personal Record Streak">
-                    <span class="text-xs">🏆</span>
-                    <span id="maxStreakDisplay" class="font-bold text-slate-800 dark:text-slate-200">1</span>
-                    <span class="text-xs">MAX</span>
+                    <span class="lg:text-xs text-[11px]">🏆</span>
+                    <span id="maxStreakDisplay" class="lg:text-xs text-[11px] font-bold text-slate-800 dark:text-slate-200">1</span>
+                    <span class="text-xs lg:block hidden">MAX</span>
                 </div>
             </div>
         </div>
 
-        <!-- Karate Belt Progress Bar & Tooltip -->
-        <div class="max-w-4xl mx-auto px-4 pb-3 py-4">
-            <div class="flex items-center justify-between text-base font-medium text-slate-500 dark:text-slate-400 mb-1.5 relative">
-                <span class="flex items-center space-x-1.5">
-                    <div class="group relative cursor-pointer inline-flex items-center ml-1 outline-none" tabindex="0">
+        <!-- Compact Karate Belt Progress (optimized vertical space) -->
+        <div class="max-w-4xl mx-auto px-4 py-2">
+            <div class="flex items-center gap-3 text-[10px] text-slate-500 dark:text-slate-400">
+                <div class="flex items-center gap-2">
+                    <div class="group relative cursor-pointer inline-flex items-center" tabindex="0">
                         <span class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold flex items-center justify-center transition-colors hover:bg-indigo-500 hover:text-white">?</span>
-                        <div class="absolute left-6 top-0 mb-2 hidden group-hover:block group-focus:block group-focus-within:block w-60 p-3 bg-slate-900 text-slate-100 text-[9px] rounded-xl shadow-2xl border border-slate-700 z-50 pointer-events-none">
-                            <p class="font-bold text-amber-400 mb-1">Advance every 5 correct answers in a row:</p>
-                            <ul class="space-y-1 text-slate-300">
+                        <div class="absolute left-6 top-0 mb-2 hidden group-hover:block group-focus:block group-focus-within:block w-44 sm:w-60 p-2 sm:p-3 bg-slate-900 text-slate-100 text-[9px] rounded-xl shadow-2xl border border-slate-700 z-50 pointer-events-none">
+                            <p class="font-bold text-amber-400 mb-1 text-xs">Advance every 5 correct answers:</p>
+                            <ul class="space-y-1 text-slate-300 text-xs">
                                 <li>⚪ White (0-4)</li>
                                 <li>🟡 Yellow (5-9)</li>
                                 <li>🟠 Orange (10-14)</li>
@@ -218,12 +218,16 @@
                             </ul>
                         </div>
                     </div>
-                    <span id="tierLabel" class="text-sm px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider">White Belt</span>
-                </span>
-                <span id="progressText" class="text-sm text-slate-700 dark:text-slate-300">0 / 5</span>
-            </div>
-            <div class="w-full h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-300 dark:border-slate-700/50 shadow-inner">
-                <div id="progressBar" class="h-full rounded-full transition-all duration-500 ease-out belt-0 w-0"></div>
+                    <span id="tierLabel" class="text-xs px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 font-semibold uppercase tracking-wider">White Belt</span>
+                </div>
+
+                <div class="flex-1">
+                    <div class="w-full h-2 sm:h-3 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden p-[1px] border border-slate-300 dark:border-slate-700/50 shadow-inner">
+                        <div id="progressBar" class="h-full rounded-full transition-all duration-500 ease-out belt-0 w-0"></div>
+                    </div>
+                </div>
+
+                <div id="progressText" class="w-12 text-right text-[10px] text-slate-700 dark:text-slate-300">0/5</div>
             </div>
         </div>
     </header>
@@ -365,7 +369,7 @@
         </section>
     </main>
 
-    <footer class="font-pixel border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-4 text-[10px] text-slate-500 transition-colors duration-200">
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-4 text-base text-slate-500 transition-colors duration-200">
         <div class="max-w-4xl mx-auto px-4 flex items-center justify-between gap-3">
             <p class="text-center sm:text-left">
                 <span class="font-extrabold">DE</span>jo &bull; 
@@ -376,9 +380,9 @@
                 &bull; 2026
             </p>
 
-            <button id="themeToggleBtn" aria-label="Toggle Light/Dark Theme" class="bg-white dark:bg-slate-950/80 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-800 shadow-md transition-all flex items-center space-x-2 text-[10px] font-semibold">
+            <button id="themeToggleBtn" aria-label="Toggle Light/Dark Theme" class="bg-white dark:bg-slate-950/80 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-800 shadow-md transition-all flex items-center space-x-2 font-semibold">
                 <span id="themeIcon">🌙</span>
-                <span id="themeLabel">Dark Mode</span>
+                <span id="themeLabel" class="hidden lg:block">Dark Mode</span>
             </button>
         </div>
     </footer>

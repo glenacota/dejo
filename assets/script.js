@@ -11,14 +11,8 @@ const DATA_URLS = {
 
 const STORAGE_KEYS = {
     theme: 'dm_theme',
-    xp: 'dm_xp',
     streak: 'dm_streak',
     maxStreak: 'dm_max_streak',
-};
-
-const XP_REWARD = {
-    noun: 15,
-    verb: 30,
 };
 
 const AUTO_ADVANCE_DELAY_MS = {
@@ -261,7 +255,6 @@ let nounsData = [];
 let verbsData = [];
 
 const state = {
-    xp: parseInt(localStorage.getItem(STORAGE_KEYS.xp) || '0', 10),
     streak: parseInt(localStorage.getItem(STORAGE_KEYS.streak) || '0', 10),
     maxStreak: parseInt(localStorage.getItem(STORAGE_KEYS.maxStreak) || '0', 10),
 
@@ -285,7 +278,6 @@ const state = {
 
 const dom = {
     // Dashboard
-    xpDisplay: document.getElementById('xpDisplay'),
     streakDisplay: document.getElementById('streakDisplay'),
     maxStreakDisplay: document.getElementById('maxStreakDisplay'),
     progressBar: document.getElementById('progressBar'),
@@ -369,11 +361,10 @@ function updateThemeUI(isDark) {
 }
 
 /* ==================================================================
- * 7. PERSISTENCE (XP / STREAK)
+ * 7. PERSISTENCE (STREAK)
  * ================================================================== */
 
 function saveProgress() {
-    localStorage.setItem(STORAGE_KEYS.xp, state.xp);
     localStorage.setItem(STORAGE_KEYS.streak, state.streak);
     localStorage.setItem(STORAGE_KEYS.maxStreak, state.maxStreak);
 }
@@ -437,9 +428,8 @@ function pickNextWithSpacedHistory(dataset, history) {
  * 10. STREAK & MILESTONE HANDLING
  * ================================================================== */
 
-function handleStreakIncrement(pointsAwarded) {
+function handleStreakIncrement() {
     state.streak += 1;
-    state.xp += pointsAwarded;
     state.maxStreak = Math.max(state.maxStreak, state.streak);
 
     saveProgress();
@@ -478,7 +468,6 @@ function triggerMilestoneReward() {
  * ================================================================== */
 
 function updateDashboardUI() {
-    dom.xpDisplay.textContent = `${state.xp} XP`;
     dom.streakDisplay.textContent = state.streak;
     dom.maxStreakDisplay.textContent = state.maxStreak;
 
@@ -547,10 +536,10 @@ function checkNounAnswer() {
 
     if (isGenderCorrect && isPluralCorrect) {
         const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
-        const message = `🎉 Perfect! ${state.currentNoun.g} ${state.currentNoun.w}, Plural: ${pluralText} (+${XP_REWARD.noun} XP)`;
+        const message = `🎉 Perfect! ${state.currentNoun.g} ${state.currentNoun.w}, Plural: ${pluralText}`;
         
         showFeedback(dom.nounFeedback, message, FEEDBACK_STYLE.success);
-        handleStreakIncrement(XP_REWARD.noun);
+        handleStreakIncrement();
         setTimeout(nextNoun, AUTO_ADVANCE_DELAY_MS.noun);
     } else {
         const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
@@ -603,9 +592,9 @@ function checkVerbAnswer() {
     });
 
     if (allCorrect) {
-        const message = `🎉 Excellent! Perfect conjugation for "${state.currentVerb.w}"! (+${XP_REWARD.verb} XP)`;
+        const message = `🎉 Excellent! Perfect conjugation for "${state.currentVerb.w}"!`;
         showFeedback(dom.verbFeedback, message, FEEDBACK_STYLE.success);
-        handleStreakIncrement(XP_REWARD.verb);
+        handleStreakIncrement();
         setTimeout(nextVerb, AUTO_ADVANCE_DELAY_MS.verb);
     } else {
         const message = '❌ Incorrect. Correct conjugations: '

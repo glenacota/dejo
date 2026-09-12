@@ -8,7 +8,7 @@ Just pure, disciplined practice.
 - **Noun & Plural** sparring ring: Practice genders and plural forms side-by-side.
 - **Verb Conjugation** katas: Train Präsens, Präteritum, and Perfekt tenses.
 - **Verb Charts**: Strike the `?` key to instantly view the complete conjugation chart.
-- **Just a spoon of gamification**: Earn XP, unlock higher belt tiers, hold your streak stance, and celebrate milestones.
+- **Just a spoon of gamification**: Unlock higher belt tiers, hold your streak stance, and celebrate milestones.
 - **Kiai! Sound FX**.
 
 

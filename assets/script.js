@@ -57,10 +57,10 @@ const FEEDBACK_STYLE = {
 
 const TAB_BUTTON_CLASS = {
     active: {
-        nouns: 'px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md',
-        verbs: 'px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-purple-600 text-white shadow-md',
+        nouns: 'flex-1 px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 bg-indigo-600 text-white shadow-md',
+        verbs: 'flex-1 px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 bg-purple-600 text-white shadow-md',
     },
-    inactive: 'px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200',
+    inactive: 'flex-1 px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200',
 };
 
 /* ==================================================================

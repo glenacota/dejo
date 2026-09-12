@@ -86,7 +86,7 @@
 
     <!-- Milestone Banner Toast -->
     <div id="milestoneToast" class="fixed top-8 left-1/2 -translate-x-1/2 z-50 hidden transition-all transform duration-300">
-        <div class="bg-amber-400 text-slate-950 font-pixel text-xs sm:text-sm px-6 py-4 rounded-none border-4 border-slate-950 shadow-2xl flex items-center space-x-3 animate-bounce">
+        <div class="bg-amber-400 text-slate-950 text-xs sm:text-sm px-6 py-4 rounded-none border-4 border-slate-950 shadow-2xl flex items-center space-x-3 animate-bounce">
             <span class="text-xl">🥋</span>
             <div>
                 <div class="font-bold uppercase tracking-wider">Belt Promoted!</div>
@@ -171,37 +171,37 @@
         </div>
     </div>
 
-    <header class="font-pixel border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 transition-colors duration-200">
+    <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 transition-colors duration-200">
         <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/30 german-flag-bg">
                     <img src="./assets/logo.png" alt="DEjo: Deutsch-Dojo">
                 </div>
                 <div>
-                    <h1 class="text-base leading-none text-slate-900 dark:text-slate-100 pt-2"><span class="font-extrabold">DE</span>jo</h1>
-                    <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 hidden sm:block"><span class="font-extrabold">De</span>utsch-Do<span class="font-extrabold">jo</span></p>
+                    <h1 class="text-xl leading-none text-slate-900 dark:text-slate-100 pt-2"><span class="font-extrabold">DE</span>jo</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 hidden sm:block"><span class="font-extrabold">De</span>utsch-Do<span class="font-extrabold">jo</span></p>
                 </div>
             </div>
 
             <!-- Gamification Dashboard -->
-            <div class="flex items-center space-x-4 pl-4 py-2 text-xs text-indigo-600 dark:text-indigo-400">
+            <div class="flex items-center space-x-4 pl-4 py-2 text-lg text-indigo-600 dark:text-indigo-400">
                 <div class="flex items-center space-x-1.5" title="Current Streak">
-                    <span class="text-orange-500 pb-1">🔥</span>
+                    <span class="text-xs">🔥</span>
                     <span id="streakDisplay" class="font-bold text-slate-800 dark:text-slate-200">1</span>
-                    <span class="text-[9px]">STREAK</span>
+                    <span class="text-xs">STREAK</span>
                 </div>
                 
                 <div class="flex items-center space-x-1.5" title="Personal Record Streak">
-                    <span class="text-yellow-500 dark:text-yellow-400 pb-1">🏆</span>
+                    <span class="text-xs">🏆</span>
                     <span id="maxStreakDisplay" class="font-bold text-slate-800 dark:text-slate-200">1</span>
-                    <span class="text-[9px]">MAX</span>
+                    <span class="text-xs">MAX</span>
                 </div>
             </div>
         </div>
 
         <!-- Karate Belt Progress Bar & Tooltip -->
         <div class="max-w-4xl mx-auto px-4 pb-3 py-4">
-            <div class="flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400 mb-1.5 relative">
+            <div class="flex items-center justify-between text-base font-medium text-slate-500 dark:text-slate-400 mb-1.5 relative">
                 <span class="flex items-center space-x-1.5">
                     <div class="group relative cursor-pointer inline-flex items-center ml-1 outline-none" tabindex="0">
                         <span class="w-4 h-4 rounded-full bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-300 text-[10px] font-bold flex items-center justify-center transition-colors hover:bg-indigo-500 hover:text-white">?</span>
@@ -228,21 +228,21 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 py-4 flex-grow w-full">
+    <main class="max-w-4xl mx-auto px-4 pt-3 flex-grow w-full">
         <!-- Navigation Tabs -->
-        <div class="flex justify-center mb-4">
-            <div class="bg-slate-200 dark:bg-slate-950/80 p-1 rounded-xl border border-slate-300 dark:border-slate-800 flex space-x-1">
-                <button id="tabNouns" class="px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 bg-indigo-600 text-white shadow-md">
-                    <span>📚 Nouns & Plurals</span>
+        <div class="w-full mb-4">
+            <div class="w-full bg-slate-200 dark:bg-slate-950/80 p-1 rounded-xl border border-slate-300 dark:border-slate-800 flex gap-1">
+                <button id="tabNouns" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 bg-indigo-600 text-white shadow-md">
+                    <span>Practice Nouns</span>
                 </button>
-                <button id="tabVerbs" class="px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
-                    <span>🏃 Verb Conjugation</span>
+                <button id="tabVerbs" class="flex-1 px-5 py-3 rounded-lg text-sm font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
+                    <span>Practice Verbs</span>
                 </button>
             </div>
         </div>
 
         <!-- NOUN PRACTICE -->
-        <section id="nounSection" class="bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden transition-colors duration-200">
+        <section id="nounSection" class="p-6 sm:p-8 relative overflow-hidden transition-colors duration-200">
             <!-- Target Word Display -->
             <div class="text-center mt-2 mb-10">
                 <h2 id="nounWord" class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">Loading...</h2>
@@ -253,13 +253,13 @@
             <div class="max-w-xl mx-auto mb-6">
                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Select Noun Gender</label>
                 <div class="grid grid-cols-3 gap-3 max-w-xl mx-auto">
-                    <button type="button" data-gender="der" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-blue-600 dark:text-blue-400 font-bold text-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" aria-pressed="false">
+                    <button type="button" data-gender="der" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-blue-600 dark:text-blue-400 font-bold text-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" aria-pressed="false">
                         der
                     </button>
-                    <button type="button" data-gender="die" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-rose-600 dark:text-rose-400 font-bold text-lg hover:border-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-rose-500" aria-pressed="false">
+                    <button type="button" data-gender="die" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-rose-600 dark:text-rose-400 font-bold text-lg hover:border-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-rose-500" aria-pressed="false">
                         die
                     </button>
-                    <button type="button" data-gender="das" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-amber-600 dark:text-amber-400 font-bold text-lg hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500" aria-pressed="false">
+                    <button type="button" data-gender="das" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-amber-600 dark:text-amber-400 font-bold text-lg hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500" aria-pressed="false">
                         das
                     </button>
                 </div>
@@ -268,7 +268,7 @@
             <!-- Plural Form Input -->
             <div class="max-w-xl mx-auto mb-6">
                 <label for="pluralInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Type the Plural Form (<em>die ...</em>)</label>
-                <input type="text" id="pluralInput" placeholder="e.g. Kinder" autocomplete="off" class="w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-center font-medium text-lg transition-all">
+                <input type="text" id="pluralInput" placeholder="e.g. Kinder" autocomplete="off" class="w-full bg-slate-200 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-center font-medium text-lg transition-all">
             </div>
 
             <!-- Action Controls -->
@@ -293,7 +293,7 @@
         </section>
 
         <!-- VERB PRACTICE -->
-        <section id="verbSection" class="bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-sm relative overflow-hidden hidden transition-colors duration-200">
+        <section id="verbSection" class="p-6 sm:p-8 relative overflow-hidden hidden transition-colors duration-200">
             <!-- Target Verb Display -->
             <div class="text-center mt-2 mb-10">
                 <h2 id="verbInfinitive" class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">gehen</h2>
@@ -305,7 +305,7 @@
                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Select what tense to practice</span>
             </div>
             <div class="flex justify-center mb-6">
-                <div class="bg-slate-100 dark:bg-slate-900/90 border border-slate-300 dark:border-slate-800 p-1 rounded-xl flex space-x-1 max-w-xl w-full mx-auto">
+                <div class="bg-slate-200 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-800 p-1 rounded-xl flex space-x-1 max-w-xl w-full mx-auto">
                     <button id="tensePres" data-tense="pres" class="tense-btn flex-1 py-3 rounded-lg text-lg font-bold transition-all bg-purple-600 text-white">Präsens</button>
                     <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-3 rounded-lg text-lg font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Präteritum</button>
                     <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-3 rounded-lg text-lg font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Perfekt</button>
@@ -317,27 +317,27 @@
                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Fill in the Pronoun Conjugations</span>
             </div>
             <div class="grid grid-cols-1 gap-3 max-w-xl mx-auto mb-6">
-                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                <div class="bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between space-x-5">
                     <span class="text-sm font-bold text-purple-600 dark:text-purple-400 w-20">ich</span>
                     <input type="text" id="conj_ich" placeholder="e.g. gehe" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
-                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                <div class="bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between space-x-5">
                     <span class="text-sm font-bold text-purple-600 dark:text-purple-400 w-20">du</span>
                     <input type="text" id="conj_du" placeholder="e.g. gehst" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
-                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                <div class="bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between space-x-5">
                     <span class="text-sm font-bold text-purple-600 dark:text-purple-400 w-20">er/sie/es</span>
                     <input type="text" id="conj_er" placeholder="e.g. geht" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
-                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                <div class="bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between space-x-5">
                     <span class="text-sm font-bold text-purple-600 dark:text-purple-400 w-20">wir</span>
                     <input type="text" id="conj_wir" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
-                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                <div class="bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between space-x-5">
                     <span class="text-sm font-bold text-purple-600 dark:text-purple-400 w-20">ihr</span>
                     <input type="text" id="conj_ihr" placeholder="e.g. geht" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>
-                <div class="bg-slate-50 dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center justify-between space-x-2">
+                <div class="bg-slate-50 dark:bg-slate-900/80 flex items-center justify-between space-x-5">
                     <span class="text-sm font-bold text-purple-600 dark:text-purple-400 w-20">sie/Sie</span>
                     <input type="text" id="conj_sie" placeholder="e.g. gehen" autocomplete="off" class="w-full bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-1.5 text-lg text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500">
                 </div>

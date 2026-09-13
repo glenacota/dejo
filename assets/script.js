@@ -127,6 +127,26 @@ class SoundFX {
         osc.stop(now + 0.25);
     }
 
+    playDemotion() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(330, now);
+        osc.frequency.exponentialRampToValueAtTime(165, now + 0.45);
+
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.45);
+    }
+
     playMilestoneFanfare() {
         this.init();
         const now = this.ctx.currentTime;
@@ -335,7 +355,11 @@ const dom = {
 
     // Misc
     milestoneToast: document.getElementById('milestoneToast'),
+    milestoneToastCard: document.getElementById('milestoneToastCard'),
+    milestoneToastIcon: document.getElementById('milestoneToastIcon'),
+    milestoneToastTitle: document.getElementById('milestoneToastTitle'),
     milestoneToastText: document.getElementById('milestoneToastText'),
+    milestoneToastEffect: document.getElementById('milestoneToastEffect'),
     themeToggleBtn: document.getElementById('themeToggleBtn'),
     themeIcon: document.getElementById('themeIcon'),
     themeLabel: document.getElementById('themeLabel'),
@@ -450,11 +474,18 @@ function handleStreakIncrement() {
 }
 
 function resetStreak() {
+    const previousTier = Math.floor(state.beltProgress / MILESTONE_INTERVAL);
     state.streak = 0;
     state.beltProgress = Math.max(0, state.beltProgress - 1);
     saveProgress();
     updateDashboardUI();
-    sfx.playWrong();
+
+    const currentTier = Math.floor(state.beltProgress / MILESTONE_INTERVAL);
+    if (currentTier < previousTier) {
+        triggerBeltDemotion(currentTier);
+    } else {
+        sfx.playWrong();
+    }
 }
 
 function triggerMilestoneReward() {
@@ -463,7 +494,26 @@ function triggerMilestoneReward() {
 
     const currentTier = Math.floor(state.beltProgress / MILESTONE_INTERVAL);
     const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];
+    dom.milestoneToastCard.className = 'bg-amber-400 text-slate-950 text-xs sm:text-sm px-6 py-4 rounded-none border-4 border-slate-950 shadow-2xl flex items-center space-x-3 animate-bounce';
+    dom.milestoneToastIcon.textContent = '🥋';
+    dom.milestoneToastTitle.textContent = 'Belt Promoted!';
     dom.milestoneToastText.textContent = `🔥 Streak ${state.streak}! Promoted to ${beltName}!`;
+    dom.milestoneToastEffect.textContent = '🔥';
+    dom.milestoneToast.classList.remove('hidden');
+
+    setTimeout(() => {
+        dom.milestoneToast.classList.add('hidden');
+    }, MILESTONE_TOAST_DURATION_MS);
+}
+
+function triggerBeltDemotion(currentTier) {
+    const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];
+    sfx.playDemotion();
+    dom.milestoneToastCard.className = 'bg-rose-400 text-rose-950 text-xs sm:text-sm px-6 py-4 rounded-none border-4 border-rose-950 shadow-2xl flex items-center space-x-3';
+    dom.milestoneToastIcon.textContent = '🥋';
+    dom.milestoneToastTitle.textContent = 'Belt Demoted';
+    dom.milestoneToastText.textContent = `Belt progress dropped to ${beltName}.`;
+    dom.milestoneToastEffect.textContent = '🚧';
     dom.milestoneToast.classList.remove('hidden');
 
     setTimeout(() => {

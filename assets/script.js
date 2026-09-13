@@ -13,6 +13,7 @@ const STORAGE_KEYS = {
     theme: 'dm_theme',
     streak: 'dm_streak',
     maxStreak: 'dm_max_streak',
+    beltProgress: 'dm_belt_progress',
 };
 
 const AUTO_ADVANCE_DELAY_MS = {
@@ -257,6 +258,10 @@ let verbsData = [];
 const state = {
     streak: parseInt(localStorage.getItem(STORAGE_KEYS.streak) || '0', 10),
     maxStreak: parseInt(localStorage.getItem(STORAGE_KEYS.maxStreak) || '0', 10),
+    beltProgress: parseInt(
+        localStorage.getItem(STORAGE_KEYS.beltProgress) || localStorage.getItem(STORAGE_KEYS.streak) || '0',
+        10,
+    ),
 
     selectedGender: null,
     selectedTense: 'pres', // 'pres' | 'praet' | 'perf'
@@ -367,6 +372,7 @@ function updateThemeUI(isDark) {
 function saveProgress() {
     localStorage.setItem(STORAGE_KEYS.streak, state.streak);
     localStorage.setItem(STORAGE_KEYS.maxStreak, state.maxStreak);
+    localStorage.setItem(STORAGE_KEYS.beltProgress, state.beltProgress);
 }
 
 /* ==================================================================
@@ -431,11 +437,12 @@ function pickNextWithSpacedHistory(dataset, history) {
 function handleStreakIncrement() {
     state.streak += 1;
     state.maxStreak = Math.max(state.maxStreak, state.streak);
+    state.beltProgress += 1;
 
     saveProgress();
     updateDashboardUI();
 
-    if (state.streak > 0 && state.streak % MILESTONE_INTERVAL === 0) {
+    if (state.beltProgress > 0 && state.beltProgress % MILESTONE_INTERVAL === 0) {
         triggerMilestoneReward();
     } else {
         sfx.playCorrect();
@@ -444,6 +451,7 @@ function handleStreakIncrement() {
 
 function resetStreak() {
     state.streak = 0;
+    state.beltProgress = Math.max(0, state.beltProgress - 1);
     saveProgress();
     updateDashboardUI();
     sfx.playWrong();
@@ -453,7 +461,7 @@ function triggerMilestoneReward() {
     sfx.playMilestoneFanfare();
     fireworks.triggerShow();
 
-    const currentTier = Math.floor(state.streak / MILESTONE_INTERVAL);
+    const currentTier = Math.floor(state.beltProgress / MILESTONE_INTERVAL);
     const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];
     dom.milestoneToastText.textContent = `🔥 Streak ${state.streak}! Promoted to ${beltName}!`;
     dom.milestoneToast.classList.remove('hidden');
@@ -471,11 +479,11 @@ function updateDashboardUI() {
     dom.streakDisplay.textContent = state.streak;
     dom.maxStreakDisplay.textContent = state.maxStreak;
 
-    const streakInTier = state.streak % MILESTONE_INTERVAL;
-    const currentTier = Math.floor(state.streak / MILESTONE_INTERVAL);
-    const progressPercent = (streakInTier / MILESTONE_INTERVAL) * 100;
+    const progressInTier = state.beltProgress % MILESTONE_INTERVAL;
+    const currentTier = Math.floor(state.beltProgress / MILESTONE_INTERVAL);
+    const progressPercent = (progressInTier / MILESTONE_INTERVAL) * 100;
 
-    dom.progressText.textContent = `${streakInTier} / ${MILESTONE_INTERVAL}`;
+    dom.progressText.textContent = `${progressInTier} / ${MILESTONE_INTERVAL}`;
     dom.progressBar.style.width = `${progressPercent}%`;
 
     const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];

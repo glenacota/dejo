@@ -488,6 +488,7 @@ function updateDashboardUI() {
 
     const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];
     dom.tierLabel.textContent = beltName;
+    dom.tierLabel.className = `text-xs px-2 py-0.5 rounded-full belt-label-${Math.min(currentTier, MAX_TIER_INDEX)} font-semibold uppercase tracking-wider`;
 
     const tierClass = `belt-${Math.min(currentTier, MAX_TIER_INDEX)}`;
     dom.progressBar.className = `h-full rounded-full transition-all duration-500 ease-out ${tierClass}`;

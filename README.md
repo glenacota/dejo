@@ -1,6 +1,6 @@
-# **DE**jo 🥋🇩🇪 
-Step onto the tatami and sharpen your German grammar with [**DE**jo (**De**utsch Do**jo**)](https://www.glenacota.me/dejo).
-Dejo is a fluff-free training hall designed to build muscle memory for German nouns and verb conjugations.
+# Deujo 🥋🇩🇪 
+Step onto the tatami and sharpen your German grammar with [**Deujo** (Deutsch-Dojo)](https://www.glenacota.me/deujo).
+Deujo is a fluff-free training hall designed to build muscle memory for German nouns and verb conjugations.
 
 Just pure, disciplined practice.
 
@@ -22,8 +22,8 @@ Because the app fetches local JSON datasets (in `./assets/`), serve it via a loc
 
 ```console
 # 1. Enter the training ground
-git clone https://github.com/glenacota/dejo.git
-cd dejo
+git clone https://github.com/glenacota/deujo.git
+cd deujo
 
 # 2. Open the dojo doors (Node or Python)
 npx serve .

@@ -843,6 +843,12 @@ function bindEvents() {
     dom.progressShareBtn.addEventListener('click', shareResult);
 
     window.addEventListener('keydown', (e) => {
+        if (e.key === '1' || e.key === '2') {
+            e.preventDefault();
+            switchTab(e.key === '1' ? 'nouns' : 'verbs');
+            return;
+        }
+
         if (e.key === '?') {
             e.preventDefault();
             if (state.activeTab === 'verbs') toggleModal();

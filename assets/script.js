@@ -727,6 +727,7 @@ function setModalVisibility(modal, isVisible) {
  * ================================================================== */
 
 function showFeedback(htmlContent, colorClasses, nextQuestion) {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     dom.feedbackModalTitle.textContent = colorClasses === FEEDBACK_STYLE.success ? '✅ Correct!' : '❌ Try again!';
     dom.feedbackModalContent.innerHTML = htmlContent;
     dom.feedbackModalPanel.className = `w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${colorClasses}`;

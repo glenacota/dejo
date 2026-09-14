@@ -16,11 +16,6 @@ const STORAGE_KEYS = {
     beltProgress: 'dm_belt_progress',
 };
 
-const AUTO_ADVANCE_DELAY_MS = {
-    noun: 1300,
-    verb: 1500,
-};
-
 const HISTORY_MAX_SIZE = 30;   // how many recently-seen words we avoid repeating
 const HISTORY_RECYCLE_SIZE = 5; // kept entries when the pool is exhausted and reset
 
@@ -292,6 +287,7 @@ const state = {
     activeTab: 'nouns', // 'nouns' | 'verbs'
     isVerbModalOpen: false,
     isNounModalOpen: false,
+    feedbackNext: null,
 
     nounHistory: [],
     verbHistory: [],
@@ -322,7 +318,6 @@ const dom = {
     checkNounBtn: document.getElementById('checkNounBtn'),
     skipNounBtn: document.getElementById('skipNounBtn'),
     toggleNounTableBtn: document.getElementById('toggleNounTableBtn'),
-    nounFeedback: document.getElementById('nounFeedback'),
     genderBtns: document.querySelectorAll('.gender-btn'),
 
     // Noun modal
@@ -335,7 +330,6 @@ const dom = {
     checkVerbBtn: document.getElementById('checkVerbBtn'),
     skipVerbBtn: document.getElementById('skipVerbBtn'),
     toggleVerbTableBtn: document.getElementById('toggleTableBtn'),
-    verbFeedback: document.getElementById('verbFeedback'),
     tenseBtns: document.querySelectorAll('.tense-btn'),
     conjInputs: {
         ich: document.getElementById('conj_ich'),
@@ -360,6 +354,11 @@ const dom = {
     milestoneToastTitle: document.getElementById('milestoneToastTitle'),
     milestoneToastText: document.getElementById('milestoneToastText'),
     milestoneToastEffect: document.getElementById('milestoneToastEffect'),
+    feedbackModal: document.getElementById('feedbackModal'),
+    feedbackModalPanel: document.getElementById('feedbackModalPanel'),
+    feedbackModalTitle: document.getElementById('feedbackModalTitle'),
+    feedbackModalContent: document.getElementById('feedbackModalContent'),
+    feedbackContinueBtn: document.getElementById('feedbackContinueBtn'),
     themeToggleBtn: document.getElementById('themeToggleBtn'),
     themeIcon: document.getElementById('themeIcon'),
     themeLabel: document.getElementById('themeLabel'),
@@ -568,8 +567,6 @@ function nextNoun() {
         dom.pluralInput.classList.remove('opacity-50', 'cursor-not-allowed');
     }
 
-    dom.nounFeedback.classList.add('hidden');
-
     dom.genderBtns.forEach((btn) => {
         btn.setAttribute('aria-pressed', 'false');
         btn.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-100', 'dark:bg-indigo-950/60');
@@ -583,7 +580,7 @@ function checkNounAnswer() {
     const userPlural = dom.pluralInput.value.trim();
 
     if (!userGender) {
-        showFeedback(dom.nounFeedback, '⚠️ Please select a gender (der, die, or das).', FEEDBACK_STYLE.warning);
+        showFeedback('⚠️ Please select a gender (der, die, or das).', FEEDBACK_STYLE.warning, nextNoun);
         return;
     }
 
@@ -595,16 +592,15 @@ function checkNounAnswer() {
 
     if (isGenderCorrect && isPluralCorrect) {
         const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
-        const message = `🎉 Perfect! ${state.currentNoun.g} ${state.currentNoun.w}, Plural: ${pluralText}`;
+        const message = `Excellent: <span class="font-extrabold underline">${state.currentNoun.g}</span> ${state.currentNoun.w}, Plural: <span class="font-extrabold underline">${pluralText}</span>`;
         
-        showFeedback(dom.nounFeedback, message, FEEDBACK_STYLE.success);
+        showFeedback(message, FEEDBACK_STYLE.success, nextNoun);
         handleStreakIncrement();
-        setTimeout(nextNoun, AUTO_ADVANCE_DELAY_MS.noun);
     } else {
         const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
-        const message = `❌ Incorrect. Correct answer: <strong>${state.currentNoun.g} ${state.currentNoun.w}</strong> (Plural: <strong>${pluralText}</strong>)`;
+        const message = `Correct answer: <span class="font-extrabold underline">${state.currentNoun.g}</span> ${state.currentNoun.w}, Plural: <span class="font-extrabold underline">${pluralText}</span>`;
         
-        showFeedback(dom.nounFeedback, message, FEEDBACK_STYLE.error);
+        showFeedback(message, FEEDBACK_STYLE.error, nextNoun);
         resetStreak();
     }
 }
@@ -618,8 +614,6 @@ function nextVerb() {
 
     dom.verbInfinitive.textContent = state.currentVerb.w;
     dom.verbMeaning.textContent = `🇬🇧 ${state.currentVerb.m}`;
-    dom.verbFeedback.classList.add('hidden');
-
     const tenseForm = state.currentVerb[state.selectedTense] || [];
     Object.entries(dom.conjInputs).forEach(([person, input]) => {
         input.value = '';
@@ -651,15 +645,14 @@ function checkVerbAnswer() {
     });
 
     if (allCorrect) {
-        const message = `🎉 Excellent! Perfect conjugation for "${state.currentVerb.w}"!`;
-        showFeedback(dom.verbFeedback, message, FEEDBACK_STYLE.success);
+        const message = `Excellent! Perfect conjugation for "${state.currentVerb.w}"!`;
+        showFeedback(message, FEEDBACK_STYLE.success, nextVerb);
         handleStreakIncrement();
-        setTimeout(nextVerb, AUTO_ADVANCE_DELAY_MS.verb);
     } else {
-        const message = '❌ Incorrect. Correct conjugations: '
+        const message = 'Correct answer: '
             + PERSONS.map((p) => `${p.label} <strong>${targetForms[PERSON_INDEX[p.key]]}</strong>`).join(', ')
             + '.';
-        showFeedback(dom.verbFeedback, message, FEEDBACK_STYLE.error);
+        showFeedback(message, FEEDBACK_STYLE.error, nextVerb);
         resetStreak();
     }
 }
@@ -724,10 +717,19 @@ function toggleNounModal() {
  * 15. SHARED UI HELPERS
  * ================================================================== */
 
-function showFeedback(element, htmlContent, colorClasses) {
-    element.innerHTML = htmlContent;
-    element.className = `max-w-xl mx-auto mt-4 p-4 rounded-xl text-center font-semibold text-sm transition-all ${colorClasses}`;
-    element.classList.remove('hidden');
+function showFeedback(htmlContent, colorClasses, nextQuestion) {
+    dom.feedbackModalTitle.textContent = colorClasses === FEEDBACK_STYLE.success ? '✅ Correct!' : '❌ Try again!';
+    dom.feedbackModalContent.innerHTML = htmlContent;
+    dom.feedbackModalPanel.className = `w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${colorClasses}`;
+    state.feedbackNext = nextQuestion;
+    dom.feedbackModal.classList.remove('hidden');
+}
+
+function closeFeedbackModal() {
+    dom.feedbackModal.classList.add('hidden');
+    const nextQuestion = state.feedbackNext;
+    state.feedbackNext = null;
+    if (nextQuestion) nextQuestion();
 }
 
 function switchTab(tab) {
@@ -765,15 +767,29 @@ function bindEvents() {
         if (e.target === dom.nounModal) closeNounModal();
     });
 
+    dom.feedbackModal.addEventListener('click', (e) => {
+        if (e.target === dom.feedbackModal) closeFeedbackModal();
+    });
+    dom.feedbackContinueBtn.addEventListener('click', closeFeedbackModal);
+
     window.addEventListener('keydown', (e) => {
         if (e.key === '?') {
             e.preventDefault();
             if (state.activeTab === 'verbs') toggleModal();
             if (state.activeTab === 'nouns') toggleNounModal();
         }
-        if (e.key === 'Escape') {
-            if (state.isVerbModalOpen) closeModal();
-            if (state.isNounModalOpen) closeNounModal();
+        if (e.key === 'Enter' || e.key === 'Return') {
+            e.preventDefault();
+            const feedbackIsOpen = !dom.feedbackModal.classList.contains('hidden');
+            const practiceModalIsOpen = state.isVerbModalOpen || state.isNounModalOpen;
+            closeModal();
+            closeNounModal();
+            if (feedbackIsOpen) {
+                closeFeedbackModal();
+            } else if (!practiceModalIsOpen) {
+                const checkButton = state.activeTab === 'nouns' ? dom.checkNounBtn : dom.checkVerbBtn;
+                checkButton.click();
+            }
         }
     });
 
@@ -808,17 +824,9 @@ function bindEvents() {
 
     dom.checkNounBtn.addEventListener('click', checkNounAnswer);
     dom.skipNounBtn.addEventListener('click', nextNoun);
-    dom.pluralInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') checkNounAnswer();
-    });
 
     dom.checkVerbBtn.addEventListener('click', checkVerbAnswer);
     dom.skipVerbBtn.addEventListener('click', nextVerb);
-    Object.values(dom.conjInputs).forEach((input) => {
-        input.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkVerbAnswer();
-        });
-    });
 }
 
 /* ==================================================================

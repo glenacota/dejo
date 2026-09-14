@@ -295,8 +295,8 @@
     </div>
 
     <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md sticky top-0 z-30 transition-colors duration-200">
-        <div class="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between gap-2">
-            <div class="flex items-center space-x-3">
+        <div class="max-w-4xl mx-auto px-4 flex items-center justify-between gap-2">
+            <div class="flex items-center space-x-3 py-1 lg:py-2">
                 <div class="w-9 h-9 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-lg shadow-indigo-500/30 german-flag-bg">
                     <img src="./assets/logo.png" alt="Deujo: Deutsch-Dojo">
                 </div>
@@ -323,7 +323,7 @@
         </div>
 
         <!-- Karate Belt Progress -->
-        <div class="max-w-4xl mx-auto px-4 py-2">
+        <div class="max-w-4xl mx-auto px-4 py-1 lg:py-2">
             <div class="flex items-center gap-3 text-[10px] text-slate-500 dark:text-slate-400">
                 <div class="flex items-center gap-2">
                     <div class="group relative cursor-pointer inline-flex items-center" tabindex="0">
@@ -355,15 +355,15 @@
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-4 pt-3 flex-grow w-full">
+    <main class="max-w-4xl mx-auto px-4 pt-1 lg:pt-3 pb-10 flex-grow w-full">
         <!-- Navigation Tabs -->
-        <div class="w-full mb-4">
+        <div class="w-full mb-0 lg:mb-4">
             <div class="w-full bg-slate-200 dark:bg-slate-950/80 p-1 rounded-xl border border-slate-300 dark:border-slate-800 flex gap-1">
-                <button id="tabNouns" type="button" class="flex-1 px-5 py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 bg-indigo-600 text-white shadow-md">
+                <button id="tabNouns" type="button" class="flex-1 px-5 py-2 lg:py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 bg-indigo-600 text-white shadow-md">
                     <kbd class="hidden sm:inline-block px-1.5 py-0.5 mr-2 text-xs bg-indigo-200 dark:bg-indigo-900/80 text-indigo-800 dark:text-indigo-200 rounded border border-indigo-300 dark:border-indigo-700/60 font-mono">1</kbd>
                     <span class="font-thin">Train <span class="font-black">Nouns</span></span>
                 </button>
-                <button id="tabVerbs" type="button" class="flex-1 px-5 py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
+                <button id="tabVerbs" type="button" class="flex-1 px-5 py-2 lg:py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
                     <kbd class="hidden sm:inline-block px-1.5 py-0.5 mr-2 text-xs bg-slate-200 dark:bg-slate-900/80 text-slate-800 dark:text-slate-200 rounded border border-slate-300 dark:border-slate-700/60 font-mono">2</kbd>
                     <span class="font-thin">Train <span class="font-black">Verbs</span></span>
                 </button>
@@ -382,13 +382,13 @@
             <div class="max-w-xl mx-auto mb-6">
                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Select Noun Gender</label>
                 <div class="grid grid-cols-3 gap-3 max-w-xl mx-auto">
-                    <button type="button" data-gender="der" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-blue-600 dark:text-blue-400 font-bold text-base hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" aria-pressed="false">
+                    <button type="button" data-gender="der" class="gender-btn py-2 lg:py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-blue-600 dark:text-blue-400 font-bold text-base hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500" aria-pressed="false">
                         der
                     </button>
-                    <button type="button" data-gender="die" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-rose-600 dark:text-rose-400 font-bold text-base hover:border-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-rose-500" aria-pressed="false">
+                    <button type="button" data-gender="die" class="gender-btn py-2 lg:py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-rose-600 dark:text-rose-400 font-bold text-base hover:border-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-rose-500" aria-pressed="false">
                         die
                     </button>
-                    <button type="button" data-gender="das" class="gender-btn py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-amber-600 dark:text-amber-400 font-bold text-base hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500" aria-pressed="false">
+                    <button type="button" data-gender="das" class="gender-btn py-2 lg:py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-200 dark:bg-slate-950/80 text-amber-600 dark:text-amber-400 font-bold text-base hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-950/40 transition-all focus:outline-none focus:ring-2 focus:ring-amber-500" aria-pressed="false">
                         das
                     </button>
                 </div>
@@ -397,7 +397,7 @@
             <!-- Plural Form Input -->
             <div class="max-w-xl mx-auto mb-6">
                 <label for="pluralInput" class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Type the Plural Form (<em>die ...</em>)</label>
-                <input type="text" id="pluralInput" placeholder="e.g. Kinder" autocomplete="off" class="w-full bg-slate-200 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-center font-medium text-lg transition-all">
+                <input type="text" id="pluralInput" placeholder="e.g. Kinder" autocomplete="off" class="w-full bg-slate-200 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 lg:py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-center font-medium text-lg transition-all">
             </div>
 
             <!-- Action Controls -->
@@ -433,9 +433,9 @@
             </div>
             <div class="flex justify-center mb-6">
                 <div class="bg-slate-200 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-800 p-1 rounded-xl flex space-x-1 max-w-xl w-full mx-auto">
-                    <button id="tensePres" data-tense="pres" class="tense-btn flex-1 py-3 rounded-lg text-base font-bold transition-all bg-purple-600 text-white">Präsens</button>
-                    <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-3 rounded-lg text-base font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Präteritum</button>
-                    <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-3 rounded-lg text-base font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Perfekt</button>
+                    <button id="tensePres" data-tense="pres" class="tense-btn flex-1 py-2 lg:py-3 rounded-lg text-base font-bold transition-all bg-purple-600 text-white">Präsens</button>
+                    <button id="tensePraet" data-tense="praet" class="tense-btn flex-1 py-2 lg:py-3 rounded-lg text-base font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Präteritum</button>
+                    <button id="tensePerf" data-tense="perf" class="tense-btn flex-1 py-2 lg:py-3 rounded-lg text-base font-bold transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Perfekt</button>
                 </div>
             </div>
 

@@ -612,8 +612,7 @@ function nextVerb() {
 
     dom.verbInfinitive.textContent = state.currentVerb.w;
     dom.verbMeaning.textContent = `🇬🇧 ${state.currentVerb.m}`;
-    const tenseForm = state.currentVerb[state.selectedTense] || [];
-    Object.entries(dom.conjInputs).forEach(([person, input]) => {
+    Object.values(dom.conjInputs).forEach((input) => {
         input.value = '';
         input.classList.remove('border-rose-500', 'border-emerald-500');
     });
@@ -711,6 +710,11 @@ function toggleNounModal() {
     state.isNounModalOpen ? closeNounModal() : openNounModal();
 }
 
+function closePracticeModals() {
+    closeModal();
+    closeNounModal();
+}
+
 /* ==================================================================
  * 15. SHARED UI HELPERS
  * ================================================================== */
@@ -739,8 +743,22 @@ function switchTab(tab) {
     dom.nounSection.classList.toggle('hidden', !isNouns);
     dom.verbSection.classList.toggle('hidden', isNouns);
 
-    if (isNouns) closeNounModal();
-    if (!isNouns) closeModal();
+    closePracticeModals();
+}
+
+function handleEnterKey(event) {
+    event.preventDefault();
+
+    const feedbackIsOpen = !dom.feedbackModal.classList.contains('hidden');
+    const practiceModalIsOpen = state.isVerbModalOpen || state.isNounModalOpen;
+
+    closePracticeModals();
+    if (feedbackIsOpen) {
+        closeFeedbackModal();
+    } else if (!practiceModalIsOpen) {
+        const checkButton = state.activeTab === 'nouns' ? dom.checkNounBtn : dom.checkVerbBtn;
+        checkButton.click();
+    }
 }
 
 /* ==================================================================
@@ -777,17 +795,7 @@ function bindEvents() {
             if (state.activeTab === 'nouns') toggleNounModal();
         }
         if (e.key === 'Enter' || e.key === 'Return') {
-            e.preventDefault();
-            const feedbackIsOpen = !dom.feedbackModal.classList.contains('hidden');
-            const practiceModalIsOpen = state.isVerbModalOpen || state.isNounModalOpen;
-            closeModal();
-            closeNounModal();
-            if (feedbackIsOpen) {
-                closeFeedbackModal();
-            } else if (!practiceModalIsOpen) {
-                const checkButton = state.activeTab === 'nouns' ? dom.checkNounBtn : dom.checkVerbBtn;
-                checkButton.click();
-            }
+            handleEnterKey(e);
         }
     });
 

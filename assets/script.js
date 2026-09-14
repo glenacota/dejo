@@ -51,6 +51,9 @@ const FEEDBACK_STYLE = {
     warning: 'bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-800',
 };
 
+const INPUT_ERROR_CLASS = 'border-rose-500';
+const INPUT_SUCCESS_CLASS = 'border-emerald-500';
+
 const TAB_BUTTON_CLASS = {
     active: {
         nouns: 'flex-1 px-5 py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 bg-indigo-600 text-white shadow-md',
@@ -552,23 +555,27 @@ function nextNoun() {
     dom.nounWord.textContent = state.currentNoun.w;
     dom.nounMeaning.textContent = `🇬🇧 ${state.currentNoun.m}`;
     
-    // Check if the loaded noun has an empty plural field
-    if (!state.currentNoun.p) {
-        dom.pluralInput.value = '';
-        dom.pluralInput.disabled = true;
-        dom.pluralInput.placeholder = 'no plural';
-        dom.pluralInput.classList.add('opacity-50', 'cursor-not-allowed');
-    } else {
-        dom.pluralInput.value = '';
-        dom.pluralInput.disabled = false;
-        dom.pluralInput.placeholder = 'e.g. Kinder';
-        dom.pluralInput.classList.remove('opacity-50', 'cursor-not-allowed');
-    }
+    const hasPlural = Boolean(state.currentNoun.p);
+    dom.pluralInput.value = '';
+    dom.pluralInput.disabled = !hasPlural;
+    dom.pluralInput.placeholder = hasPlural ? 'e.g. Kinder' : 'no plural';
+    dom.pluralInput.classList.toggle('opacity-50', !hasPlural);
+    dom.pluralInput.classList.toggle('cursor-not-allowed', !hasPlural);
 
     dom.genderBtns.forEach((btn) => {
         btn.setAttribute('aria-pressed', 'false');
         btn.classList.remove('ring-2', 'ring-indigo-500', 'bg-indigo-100', 'dark:bg-indigo-950/60');
     });
+}
+
+function handleAnswerResult({ isCorrect, message, nextQuestion }) {
+    showFeedback(message, isCorrect ? FEEDBACK_STYLE.success : FEEDBACK_STYLE.error, nextQuestion);
+
+    if (isCorrect) {
+        handleStreakIncrement();
+    } else {
+        resetStreak();
+    }
 }
 
 function checkNounAnswer() {
@@ -588,19 +595,17 @@ function checkNounAnswer() {
     const hasNoPlural = !state.currentNoun.p;
     const isPluralCorrect = hasNoPlural || (userPlural.toLowerCase() === state.currentNoun.p.toLowerCase());
 
-    if (isGenderCorrect && isPluralCorrect) {
-        const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
-        const message = `Excellent: <span class="font-extrabold underline">${state.currentNoun.g}</span> ${state.currentNoun.w}, Plural: <span class="font-extrabold underline">${pluralText}</span>`;
-        
-        showFeedback(message, FEEDBACK_STYLE.success, nextNoun);
-        handleStreakIncrement();
-    } else {
-        const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
-        const message = `Correct answer: <span class="font-extrabold underline">${state.currentNoun.g}</span> ${state.currentNoun.w}, Plural: <span class="font-extrabold underline">${pluralText}</span>`;
-        
-        showFeedback(message, FEEDBACK_STYLE.error, nextNoun);
-        resetStreak();
-    }
+    const pluralText = hasNoPlural ? 'no plural' : `die ${state.currentNoun.p}`;
+    const answer = `<span class="font-extrabold underline">${state.currentNoun.g}</span> ${state.currentNoun.w}, Plural: <span class="font-extrabold underline">${pluralText}</span>`;
+    const message = isGenderCorrect && isPluralCorrect
+        ? `Excellent: ${answer}`
+        : `Correct answer: ${answer}`;
+
+    handleAnswerResult({
+        isCorrect: isGenderCorrect && isPluralCorrect,
+        message,
+        nextQuestion: nextNoun,
+    });
 }
 
 /* ==================================================================
@@ -614,7 +619,7 @@ function nextVerb() {
     dom.verbMeaning.textContent = `🇬🇧 ${state.currentVerb.m}`;
     Object.values(dom.conjInputs).forEach((input) => {
         input.value = '';
-        input.classList.remove('border-rose-500', 'border-emerald-500');
+        input.classList.remove(INPUT_ERROR_CLASS, INPUT_SUCCESS_CLASS);
     });
 
     if (state.isVerbModalOpen) {
@@ -635,23 +640,19 @@ function checkVerbAnswer() {
         const expected = targetForms[PERSON_INDEX[person]].toLowerCase();
         const isCorrect = userValue === expected;
 
-        input.classList.toggle('border-emerald-500', isCorrect);
-        input.classList.toggle('border-rose-500', !isCorrect);
+        input.classList.toggle(INPUT_SUCCESS_CLASS, isCorrect);
+        input.classList.toggle(INPUT_ERROR_CLASS, !isCorrect);
 
         if (!isCorrect) allCorrect = false;
     });
 
-    if (allCorrect) {
-        const message = `Excellent! Perfect conjugation for "${state.currentVerb.w}"!`;
-        showFeedback(message, FEEDBACK_STYLE.success, nextVerb);
-        handleStreakIncrement();
-    } else {
-        const message = 'Correct answer: '
+    const message = allCorrect
+        ? `Excellent! Perfect conjugation for "${state.currentVerb.w}"!`
+        : 'Correct answer: '
             + PERSONS.map((p) => `${p.label} <strong>${targetForms[PERSON_INDEX[p.key]]}</strong>`).join(', ')
             + '.';
-        showFeedback(message, FEEDBACK_STYLE.error, nextVerb);
-        resetStreak();
-    }
+
+    handleAnswerResult({ isCorrect: allCorrect, message, nextQuestion: nextVerb });
 }
 
 /* ==================================================================
@@ -682,12 +683,12 @@ function renderConjugationModal() {
 function openModal() {
     if (state.activeTab !== 'verbs') return;
     renderConjugationModal();
-    dom.verbModal.classList.remove('hidden');
+    setModalVisibility(dom.verbModal, true);
     state.isVerbModalOpen = true;
 }
 
 function closeModal() {
-    dom.verbModal.classList.add('hidden');
+    setModalVisibility(dom.verbModal, false);
     state.isVerbModalOpen = false;
 }
 
@@ -697,12 +698,12 @@ function toggleModal() {
 
 function openNounModal() {
     if (state.activeTab !== 'nouns') return;
-    dom.nounModal.classList.remove('hidden');
+    setModalVisibility(dom.nounModal, true);
     state.isNounModalOpen = true;
 }
 
 function closeNounModal() {
-    dom.nounModal.classList.add('hidden');
+    setModalVisibility(dom.nounModal, false);
     state.isNounModalOpen = false;
 }
 
@@ -715,6 +716,10 @@ function closePracticeModals() {
     closeNounModal();
 }
 
+function setModalVisibility(modal, isVisible) {
+    modal.classList.toggle('hidden', !isVisible);
+}
+
 /* ==================================================================
  * 15. SHARED UI HELPERS
  * ================================================================== */
@@ -724,11 +729,11 @@ function showFeedback(htmlContent, colorClasses, nextQuestion) {
     dom.feedbackModalContent.innerHTML = htmlContent;
     dom.feedbackModalPanel.className = `w-full max-w-md rounded-2xl shadow-2xl overflow-hidden ${colorClasses}`;
     state.feedbackNext = nextQuestion;
-    dom.feedbackModal.classList.remove('hidden');
+    setModalVisibility(dom.feedbackModal, true);
 }
 
 function closeFeedbackModal() {
-    dom.feedbackModal.classList.add('hidden');
+    setModalVisibility(dom.feedbackModal, false);
     const nextQuestion = state.feedbackNext;
     state.feedbackNext = null;
     if (nextQuestion) nextQuestion();

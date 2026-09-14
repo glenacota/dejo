@@ -209,7 +209,7 @@
             </div>
             <div id="feedbackModalContent" class="px-5 py-6 text-center text-sm leading-relaxed"></div>
             <div class="px-5 pb-5 flex justify-center">
-                <button id="feedbackContinueBtn" type="button" class="min-h-11 w-full sm:w-auto px-8 py-3 rounded-xl bg-black/10 hover:bg-black/20 border border-current/20 font-bold text-sm transition-colors active:scale-[0.98]">Continue</button>
+                <button id="feedbackContinueBtn" type="button" class="min-h-11 w-full sm:w-auto px-8 py-3 rounded-xl bg-black/10 hover:bg-black/20 border border-current/20 font-bold text-sm transition-colors active:scale-[0.98]" aria-label="Continue to the next word">Continue</button>
             </div>
         </div>
     </div>
@@ -221,7 +221,7 @@
                 <h3 id="modalVerbTitle" class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
                     gehen <span id="modalVerbMeaning" class="text-sm font-normal text-slate-500 dark:text-slate-400 italic">to go</span>
                 </h3>
-                <button id="closeVerbModalBtn" class="modal-close" aria-label="Close conjugation table">
+                <button id="closeVerbModalBtn" type="button" class="modal-close" aria-label="Close conjugation table">
                     ✕
                 </button>
             </div>
@@ -253,7 +253,7 @@
                 <h3 id="nounModalTitle" class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-3">
                     📚 German Noun & Plural Rules
                 </h3>
-                <button id="closeNounModalBtn" class="modal-close" aria-label="Close noun rules">
+                <button id="closeNounModalBtn" type="button" class="modal-close" aria-label="Close noun rules">
                     ✕
                 </button>
             </div>
@@ -351,10 +351,10 @@
         <!-- Navigation Tabs -->
         <div class="w-full mb-4">
             <div class="w-full bg-slate-200 dark:bg-slate-950/80 p-1 rounded-xl border border-slate-300 dark:border-slate-800 flex gap-1">
-                <button id="tabNouns" class="flex-1 px-5 py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 bg-indigo-600 text-white shadow-md">
+                <button id="tabNouns" type="button" class="flex-1 px-5 py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 bg-indigo-600 text-white shadow-md">
                     <span>Practice Nouns</span>
                 </button>
-                <button id="tabVerbs" class="flex-1 px-5 py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
+                <button id="tabVerbs" type="button" class="flex-1 px-5 py-3 rounded-lg text-base font-semibold transition-all flex items-center justify-center space-x-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">
                     <span>Practice Verbs</span>
                 </button>
             </div>
@@ -393,15 +393,15 @@
             <!-- Action Controls -->
             <div class="max-w-xl mx-auto flex flex-col items-center gap-3 mt-10">
                 <div class="flex w-full gap-3">
-                    <button id="checkNounBtn" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.99] text-base">
+                    <button id="checkNounBtn" type="button" class="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-indigo-600/30 transition-all active:scale-[0.99] text-base">
                         Check Answer
                     </button>
-                    <button id="skipNounBtn" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
+                    <button id="skipNounBtn" type="button" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
                         Skip
                     </button>
                 </div>
 
-                <button id="toggleNounTableBtn" class="w-max text-indigo-700 dark:text-indigo-300 font-semibold py-2.5 px-5 flex items-center space-x-2 text-sm hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-xl" title="Hotkey: ?">
+                <button id="toggleNounTableBtn" type="button" class="w-max text-indigo-700 dark:text-indigo-300 font-semibold py-2.5 px-5 flex items-center space-x-2 text-sm hover:bg-indigo-100 dark:hover:bg-indigo-900/50 rounded-xl" title="Hotkey: ?">
                     <span>👨‍🏫 Teach me!</span>
                     <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] bg-indigo-200 dark:bg-indigo-900/80 text-indigo-800 dark:text-indigo-200 rounded border border-indigo-300 dark:border-indigo-700/60 font-mono">?</kbd>
                 </button>
@@ -463,15 +463,15 @@
             <!-- Action Controls -->
             <div class="max-w-md mx-auto flex flex-col items-center gap-3 mt-10">
                 <div class="flex w-full gap-3">
-                    <button id="checkVerbBtn" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-purple-600/30 transition-all active:scale-[0.99] text-base">
+                    <button id="checkVerbBtn" type="button" class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-purple-600/30 transition-all active:scale-[0.99] text-base">
                         Check Answer
                     </button>
-                    <button id="skipVerbBtn" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
+                    <button id="skipVerbBtn" type="button" class="bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 font-semibold py-3.5 px-4 rounded-xl border border-slate-300 dark:border-slate-800 transition-all">
                         Skip
                     </button>
                 </div>
 
-                <button id="toggleTableBtn" class="w-max text-purple-700 dark:text-purple-300 font-semibold py-2.5 px-5 flex items-center space-x-2 text-sm hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-xl" title="Hotkey: ?">
+                <button id="toggleTableBtn" type="button" class="w-max text-purple-700 dark:text-purple-300 font-semibold py-2.5 px-5 flex items-center space-x-2 text-sm hover:bg-purple-100 dark:hover:bg-purple-900/50 rounded-xl" title="Hotkey: ?">
                     <span>👨‍🏫 Teach me!</span>
                     <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-[10px] bg-purple-200 dark:bg-purple-900/80 text-purple-800 dark:text-purple-200 rounded border border-purple-300 dark:border-purple-700/60 font-mono">?</kbd>
                 </button>
@@ -491,7 +491,7 @@
                 &bull; 2026
             </p>
 
-            <button id="themeToggleBtn" aria-label="Toggle Light/Dark Theme" class="bg-white dark:bg-slate-950/80 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-800 shadow-md transition-all flex items-center space-x-2 font-semibold">
+            <button id="themeToggleBtn" type="button" aria-label="Toggle Light/Dark Theme" class="bg-white dark:bg-slate-950/80 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-800 shadow-md transition-all flex items-center space-x-2 font-semibold">
                 <span id="themeIcon">🌙</span>
                 <span id="themeLabel" class="hidden lg:block">Dark Mode</span>
             </button>

@@ -356,6 +356,8 @@ const dom = {
     milestoneToastTitle: document.getElementById('milestoneToastTitle'),
     milestoneToastText: document.getElementById('milestoneToastText'),
     milestoneToastEffect: document.getElementById('milestoneToastEffect'),
+    progressShareBtn: document.getElementById('progressShareBtn'),
+    shareStatus: document.getElementById('shareStatus'),
     feedbackModal: document.getElementById('feedbackModal'),
     feedbackModalPanel: document.getElementById('feedbackModalPanel'),
     feedbackModalTitle: document.getElementById('feedbackModalTitle'),
@@ -732,6 +734,52 @@ function showFeedback(htmlContent, colorClasses, nextQuestion) {
     setModalVisibility(dom.feedbackModal, true);
 }
 
+function getShareMessage() {
+    return [
+        `🥋🇩🇪 I'm a ${dom.tierLabel.textContent} in the Deujo now.`,
+        `Can you beat my ${state.maxStreak} streak of flawless German mastery?`,
+        'Join in: https://deujo.glenacota.me'
+    ].join('\n');
+}
+
+async function copyShareText(text) {
+    if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        return;
+    }
+
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.setAttribute('readonly', '');
+    textArea.style.position = 'fixed';
+    textArea.style.opacity = '0';
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    textArea.remove();
+}
+
+async function shareResult() {
+    const shareData = {
+        text: `${getShareMessage()}`,
+    };
+
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+            dom.shareStatus.textContent = 'Result shared!';
+            return;
+        }
+
+        await copyShareText(shareData.text);
+        dom.shareStatus.textContent = 'Result copied to clipboard!';
+    } catch (error) {
+        if (error.name !== 'AbortError') {
+            dom.shareStatus.textContent = 'Sharing is unavailable right now.';
+        }
+    }
+}
+
 function closeFeedbackModal() {
     setModalVisibility(dom.feedbackModal, false);
     const nextQuestion = state.feedbackNext;
@@ -792,6 +840,7 @@ function bindEvents() {
         if (e.target === dom.feedbackModal) closeFeedbackModal();
     });
     dom.feedbackContinueBtn.addEventListener('click', closeFeedbackModal);
+    dom.progressShareBtn.addEventListener('click', shareResult);
 
     window.addEventListener('keydown', (e) => {
         if (e.key === '?') {

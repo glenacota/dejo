@@ -302,7 +302,6 @@ const dom = {
     streakDisplay: document.getElementById('streakDisplay'),
     maxStreakDisplay: document.getElementById('maxStreakDisplay'),
     progressBar: document.getElementById('progressBar'),
-    progressText: document.getElementById('progressText'),
     tierLabel: document.getElementById('tierLabel'),
 
     // Tabs & sections
@@ -532,7 +531,6 @@ function updateDashboardUI() {
     const currentTier = Math.floor(state.beltProgress / MILESTONE_INTERVAL);
     const progressPercent = (progressInTier / MILESTONE_INTERVAL) * 100;
 
-    dom.progressText.textContent = `${progressInTier} / ${MILESTONE_INTERVAL}`;
     dom.progressBar.style.width = `${progressPercent}%`;
 
     const beltName = BELT_NAMES[Math.min(currentTier, BELT_NAMES.length - 1)];
